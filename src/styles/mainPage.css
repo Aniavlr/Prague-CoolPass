@@ -15,6 +15,8 @@ body {
   align-items: center;
   justify-content: center;
   height: 43px;
+  position: relative; /* Меняем на relative, так как позиционирование теперь в nav-wrapper */
+  z-index: 1000;
 }
 
 .navbar-container {
@@ -170,4 +172,161 @@ body {
 .dropdown-item.selected {
   background-color: rgba(218, 75, 7, 0.6);
   font-weight: 600;
+}
+
+.nav-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000; /* Высокий z-index чтобы быть над всем */
+}
+
+.slider-section {
+  position: relative;
+  width: 100%;
+  height: 550px; /* Фиксированная высота слайдера */
+  margin-top: 0;
+}
+
+/* Стили для контента поверх слайдера */
+.overlay-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: left;
+  color: white;
+  z-index: 20; /* Выше слайдера, но ниже навигации */
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 20px;
+}
+
+.header-title {
+  font-family: Arial, sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 48px;
+  line-height: 130%;
+  color: #fff;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.header-subtitle {
+  font-family: Arial, sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 26px;
+  line-height: 130%;
+  color: #fff;
+  text-transform: none;
+  margin-top: 8px;
+  margin-left: 3px;
+}
+
+.title-block {
+  margin-top: 90px;
+  padding: 9px 0 10px 22px;
+  text-align: left;
+}
+
+.underbar-text {
+  align-self: center;
+  font-family: Open Sans, sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  line-height: 130%;
+  margin: 0;
+}
+
+.underbar {
+  width: 100%;
+  height: 50px;
+  background: #da4b07;
+  color: #fff;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: row;
+  margin-left: 26px;
+  margin-top: 27px;
+}
+
+.search-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 270px;
+  position: relative;
+}
+
+.attractions-search {
+  background: #fff;
+  border-radius: 5px;
+  border: none;
+  width: 239px;
+  height: 37px;
+  padding: 0;
+  text-indent: 12px;
+  font-family: Open Sans, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 165%;
+  color: #252c3e;
+  text-transform: capitalize;
+}
+
+.attractions-search:focus {
+  outline: none;
+}
+
+/* .autocomplete__box.autocomplete__searching {
+  border-radius: 5px 5px 0 0;
+  border: 1px solid #fdca2e;
+  border-bottom: none;
+} */
+
+.autocomplete__box .autocomplete__inputs {
+  box-sizing: border-box;
+  padding: 0;
+  width: 270px;
+  background: #fff;
+  border-radius: 5px;
+}
+
+.show-attractions-btn {
+  margin-left: 21px;
+  min-width: 70px;
+  width: auto;
+  padding: 0 20px;
+  height: 37px;
+}
+
+.action-button {
+  cursor: pointer;
+  color: #fff;
+  line-height: 35px;
+  font-family: Open Sans Semibold, sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  background: #da4b07;
+  border: 1px solid #da4b07;
+  box-sizing: border-box;
+  border-radius: 5px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.action-button:hover {
+  background: #ef5106;
+  border: 1px solid #ef5106;
 }
