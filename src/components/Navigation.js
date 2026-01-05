@@ -1,10 +1,9 @@
-import { useState } from "react";
 import ButtonPay from "./ButtonPay";
 import ButtonTranslate from "./ButtonTranslate";
-import { TranslationProvider } from "../TranslationContext";
+import { useTranslation } from "../TranslationContext";
 
-export default function Navigation() {
-  const [translations, setTranslations] = useState({});
+export default function Navigation({ setTranslations }) {
+  const t = useTranslation();
 
   const menuIds = [
     "5a7a893966105c2e28d87bd1", // CoolPass/Card
@@ -16,37 +15,35 @@ export default function Navigation() {
   ];
 
   return (
-    <TranslationProvider translations={translations}>
-      <nav className="navbar">
-        <div className="navbar-container">
-          <div className="left-nav">
-            <a href="/" className="navbar-brand">
-              CoolPass
-            </a>
-          </div>
-
-          <div className="center-nav">
-            <ul className="menu">
-              {menuIds.map((id) => (
-                <li key={id}>
-                  <a href="*">{translations[id] || "Loading..."}</a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="right-nav">
-            <ul className="menu">
-              <li>
-                <ButtonPay />
-              </li>
-              <li>
-                <ButtonTranslate onTranslationsChange={setTranslations} />
-              </li>
-            </ul>
-          </div>
+    <nav className="navbar">
+      <div className="navbar-container">
+        <div className="left-nav">
+          <a href="/" className="navbar-brand">
+            CoolPass
+          </a>
         </div>
-      </nav>
-    </TranslationProvider>
+
+        <div className="center-nav">
+          <ul className="menu">
+            {menuIds.map((id) => (
+              <li key={id}>
+                <a href="*">{t(id) || "Loading..."}</a>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="right-nav">
+          <ul className="menu">
+            <li>
+              <ButtonPay />
+            </li>
+            <li>
+              <ButtonTranslate onTranslationsChange={setTranslations} />
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
   );
 }

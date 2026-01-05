@@ -1,18 +1,17 @@
-import { useState } from "react";
 import Navigation from "../components/Navigation";
 import ImageSlider from "../components/ImageSlider";
-import { TranslationProvider } from "../TranslationContext";
+import BestAttractions from "../components/BestAttractoins";
+import { useTranslation } from "../TranslationContext";
 
 import "../styles/mainPage.css";
 
-export default function MainPage() {
-  const [translations, setTranslations] = useState({});
+export default function MainPage({ setTranslations }) {
+  const t = useTranslation();
 
   return (
-    <TranslationProvider translations={translations}>
     <div className="main-page">
       <div className="nav-wrapper">
-        <Navigation />
+        <Navigation setTranslations={setTranslations} />
       </div>
       <div className="slider-section">
         <ImageSlider />
@@ -20,13 +19,18 @@ export default function MainPage() {
         <div className="overlay-content">
           <div className="title-block">
             <h1 className="header-title">
-              PRAGUE COOLPASS
+              {t("title_line1") ||
+                (t("title") && t("title").split(/<br\/?>/i)[0]) ||
+                "PRAGUE COOLPASS"}
               <br />
-              ВЫБОР НА ЛЮБОЙ ВКУС
+              {t("title_line2") ||
+                (t("title") && t("title").split(/<br\/?>/i)[1]) ||
+                "ВЫБОР НА ЛЮБОЙ ВКУС"}
             </h1>
             <h3 className="header-subtitle">
-              Пасс "Все включено" - самый широкий выбор достопримечательностей и
-              развлечений в Праге
+              {t("subtitle") ||
+                `Пасс "Все включено" - самый широкий выбор достопримечательностей и
+              развлечений в Праге`}
             </h3>
           </div>
           <div className="form-container">
@@ -35,9 +39,9 @@ export default function MainPage() {
                 <div className="autocomplete__box autocomplete__searching">
                   <div className="autocomplete__inputs">
                     <input
-                      placeholder="Поиск объектов"
+                      placeholder={t("SEARCH") || "Поиск объектов"}
                       type="text"
-                      autocomplete="off"
+                      autoComplete="off"
                       className="attractions-search"
                     />
                     <input type="hidden" />
@@ -46,7 +50,7 @@ export default function MainPage() {
               </label>
               <div className="magnifying-glass">
                 <img
-                  src="/img/search.a842451d.svg"
+                  src="img/search.a842451d.svg"
                   alt="search"
                   style={{
                     width: "20px",
@@ -61,7 +65,7 @@ export default function MainPage() {
               </div>
             </div>
             <button className="action-button show-attractions-btn">
-              Поехали
+              {t("HOME_lets_go_button") || "Поехали"}
             </button>
           </div>
         </div>
@@ -69,12 +73,16 @@ export default function MainPage() {
 
       <div className="underbar">
         <p className="underbar-text">
-          C 1992 года - Вход в 80+ аттракций - Единственный Пасс с Национальным
+          {t("header_banner") ||
+            `C 1992 года - Вход в 80+ аттракций - Единственный Пасс с Национальным
           музеем и Национальной галереей - CoolPass или Prague Card - Лучшая
-          цена
+          цена`}
         </p>
       </div>
+
+      <section>
+            <BestAttractions/>
+      </section>
     </div>
-    </TranslationProvider>
   );
 }

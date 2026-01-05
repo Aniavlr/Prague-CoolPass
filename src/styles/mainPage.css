@@ -330,3 +330,13 @@ body {
   background: #ef5106;
   border: 1px solid #ef5106;
 }
+
+h3 {
+  font-family: Open Sans Bold, sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 22px;
+  line-height: 130%;
+  text-transform: uppercase;
+  color: #252c3e;
+}

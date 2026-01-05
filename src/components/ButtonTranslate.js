@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 const languages = [
   { code: "en", label: "English" },
@@ -15,75 +15,116 @@ export default function ButtonTranslate({ onTranslationsChange }) {
   const [currentLabel, setCurrentLabel] = useState("РУССКИЙ");
   const [isOpen, setIsOpen] = useState(false);
 
-  useEffect(() => {
-    Promise.all([
-      fetch("https://api2.praguecoolpass.com/translation").then((r) =>
-        r.json()
-      ),
-      fetch("https://api2.praguecoolpass.com/menu").then((r) => r.json()),
-    ])
-      .then(([translationData, menuData]) => {
-        const combined = {};
+  // Функция разделения title на две строки
+  const splitTitle = (title) => {
+    if (!title) return { title_line1: "", title_line2: "" };
 
-        languages.forEach((lang) => {
-          const code = lang.code;
-          combined[code] = {
-            ...(translationData[code] || {}),
+    // Убираем возможные HTML-энтити
+    let cleanTitle = title
+      .replace(/&lt;/g, "<")
+      .replace(/&gt;/g, ">")
+      .replace(/&#039;/g, "'");
 
-            // Добавляем переводы меню (приоритет)
-            ...menuData.reduce((acc, item) => {
-              if (item.menu) {
-                acc[item._id] =
-                  item.content[code]?.title ||
-                  item.content.en?.title ||
-                  "Unknown";
-              }
-              return acc;
-            }, {}),
-          };
+    // Разделяем по <br>, <br/>, <br />
+    const parts = cleanTitle.split(/<br\s*\/?\s*>/i);
+
+    const line1 = parts[0]?.trim() || "";
+    const line2 = parts[1]?.trim() || "";
+
+    return { title_line1: line1, title_line2: line2 };
+  };
+
+  // Загрузка и обработка всех переводов
+  const loadTranslations = async (selectedCode = "ru") => {
+    try {
+      const [translationRes, menuRes, pageRes, attractRes] = await Promise.all([
+        fetch("https://api2.praguecoolpass.com/translation"),
+        fetch("https://api2.praguecoolpass.com/menu"),
+        fetch("https://api2.praguecoolpass.com/pages/5fd771cc072e5479bded0f2b"),
+        fetch("https://api2.praguecoolpass.com/object/attraction/"),
+      ]);
+
+      const [translationData, menuData, pageData, attractData] =
+        await Promise.all([
+          translationRes.json(),
+          menuRes.json(),
+          pageRes.json(),
+          attractRes.json(),
+        ]);
+
+      const menuTranslations = {};
+      menuData.forEach((item) => {
+        if (item.menu && item._id) {
+          menuTranslations[item._id] =
+            item.content[selectedCode]?.title ||
+            item.content.en?.title ||
+            "Unknown";
+        }
+      });
+
+      // Обрабатываем title для выбранного языка
+      const pageContent =
+        pageData.content?.[selectedCode] || pageData.content?.en || {};
+      const { title_line1, title_line2 } = splitTitle(pageContent.title);
+
+      // Переводы достопримечательностей
+      const attractionsTranslations = {};
+
+      if (Array.isArray(attractData)) {
+        attractData.forEach((attraction) => {
+          const id = attraction._id;
+          if (!id) return;
+
+          const langContent =
+            attraction.content?.[selectedCode] || attraction.content?.en || {};
+
+          if (langContent.title) {
+            attractionsTranslations[`ATTR_${id}_title`] = langContent.title;
+          }
+          if (langContent.subtitle) {
+            const cleanSubtitle = langContent.subtitle
+              .replace(/<br\s*\/?\s*>/gi, " ")
+              .replace(/\s+/g, " ")
+              .trim();
+            attractionsTranslations[`ATTR_${id}_subtitle`] = cleanSubtitle;
+          }
+          // Если нужно — можно добавить text, banner и т.д.
         });
+      }
 
-        const defaultCode = "ru";
-        onTranslationsChange(combined[defaultCode] || {});
+      const finalTranslations = {
+        ...(translationData[selectedCode] || {}),
+        ...menuTranslations,
+        ...pageContent,
+        title_line1,
+        title_line2,
+        ...attractionsTranslations,
+      };
 
-        // Восстанавливаем сохранённый язык
-        const savedLabel = localStorage.getItem("selectedLang") || "РУССКИЙ";
-        const savedLang = languages.find((l) => l.label === savedLabel) || {
-          code: defaultCode,
-        };
-        setCurrentLabel(savedLang.label);
-        onTranslationsChange(combined[savedLang.code] || combined[defaultCode]);
-      })
-      .catch((err) => console.error("Load error:", err));
-  }, [onTranslationsChange]);
+      onTranslationsChange(finalTranslations);
+    } catch (err) {
+      console.error("Ошибка загрузки переводов:", err);
+    }
+  };
+
+  // Первая загрузка
+  useEffect(() => {
+    const savedLabel = localStorage.getItem("selectedLang") || "РУССКИЙ";
+    const savedLang = languages.find((l) => l.label === savedLabel) || {
+      code: "ru",
+      label: "РУССКИЙ",
+    };
+
+    setCurrentLabel(savedLang.label);
+    loadTranslations(savedLang.code);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleSelect = (label, code) => {
     setCurrentLabel(label);
     setIsOpen(false);
     localStorage.setItem("selectedLang", label);
-
-    // При смене языка — заново загружаем и объединяем
-    Promise.all([
-      fetch("https://api2.praguecoolpass.com/translation").then((r) =>
-        r.json()
-      ),
-      fetch("https://api2.praguecoolpass.com/menu").then((r) => r.json()),
-    ]).then(([translationData, menuData]) => {
-      const menuTranslations = menuData.reduce((acc, item) => {
-        if (item.menu) {
-          acc[item._id] =
-            item.content[code]?.title || item.content.en?.title || "Unknown";
-        }
-        return acc;
-      }, {});
-
-      const final = {
-        ...(translationData[code] || {}),
-        ...menuTranslations,
-      };
-
-      onTranslationsChange(final);
-    });
+    loadTranslations(code);
   };
 
   return (

@@ -29,7 +29,6 @@ const ImageSlider = () => {
     return () => clearInterval(interval);
   }, [isHovered]);
 
-
   useEffect(() => {
     if (current === length || current === -1) {
       const timer = setTimeout(() => {
