@@ -1,6 +1,7 @@
 import Navigation from "../components/Navigation";
 import ImageSlider from "../components/ImageSlider";
 import BestAttractions from "../components/BestAttractoins";
+import CoolPassBenefits from "../components/CoolPassBenefits";
 import { useTranslation } from "../TranslationContext";
 
 import "../styles/mainPage.css";
@@ -81,7 +82,11 @@ export default function MainPage({ setTranslations }) {
       </div>
 
       <section>
-            <BestAttractions/>
+        <BestAttractions />
+      </section>
+
+      <section>
+        <CoolPassBenefits />
       </section>
     </div>
   );

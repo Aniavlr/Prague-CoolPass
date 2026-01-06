@@ -50,7 +50,7 @@ export default function BestAttractions() {
 
   const attractions = [
     {
-      id: "5a2d0366e7f9516f98bc904e", // Собор Святого Вита (пример ID — замени на реальный из API)
+      id: "5a2d0366e7f9516f98bc904e", // Собор Святого Вита
       img: "img/small_3ea2e28d-bcac-447c-9b02-eadcb21a05f4.jpg",
     },
     {

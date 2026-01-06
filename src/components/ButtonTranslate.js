@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { cleanHtmlText } from "../helper";
 
 const languages = [
   { code: "en", label: "English" },
@@ -15,17 +16,14 @@ export default function ButtonTranslate({ onTranslationsChange }) {
   const [currentLabel, setCurrentLabel] = useState("РУССКИЙ");
   const [isOpen, setIsOpen] = useState(false);
 
-  // Функция разделения title на две строки
   const splitTitle = (title) => {
     if (!title) return { title_line1: "", title_line2: "" };
 
-    // Убираем возможные HTML-энтити
     let cleanTitle = title
       .replace(/&lt;/g, "<")
       .replace(/&gt;/g, ">")
       .replace(/&#039;/g, "'");
 
-    // Разделяем по <br>, <br/>, <br />
     const parts = cleanTitle.split(/<br\s*\/?\s*>/i);
 
     const line1 = parts[0]?.trim() || "";
@@ -34,7 +32,6 @@ export default function ButtonTranslate({ onTranslationsChange }) {
     return { title_line1: line1, title_line2: line2 };
   };
 
-  // Загрузка и обработка всех переводов
   const loadTranslations = async (selectedCode = "ru") => {
     try {
       const [translationRes, menuRes, pageRes, attractRes] = await Promise.all([
@@ -62,14 +59,78 @@ export default function ButtonTranslate({ onTranslationsChange }) {
         }
       });
 
-      // Обрабатываем title для выбранного языка
       const pageContent =
         pageData.content?.[selectedCode] || pageData.content?.en || {};
       const { title_line1, title_line2 } = splitTitle(pageContent.title);
 
-      // Переводы достопримечательностей
-      const attractionsTranslations = {};
+      const benefitsTranslations = {};
+      if (pageContent.benefits) {
+        if (pageContent.benefits.benefits_title) {
+          benefitsTranslations["benefits_title"] = cleanHtmlText(
+            pageContent.benefits.benefits_title
+          );
+        }
 
+        if (
+          pageContent.benefits.items &&
+          Array.isArray(pageContent.benefits.items)
+        ) {
+          pageContent.benefits.items.forEach((item, index) => {
+            benefitsTranslations[`benefit_${index}_title`] = cleanHtmlText(
+              item.title
+            );
+            benefitsTranslations[`benefit_${index}_text`] = cleanHtmlText(
+              item.text
+            );
+          });
+        }
+      }
+
+      const offersTranslations = {};
+      if (pageContent.offers) {
+        if (pageContent.offers.offers_title) {
+          offersTranslations["offers_title"] = cleanHtmlText(
+            pageContent.offers.offers_title
+          );
+        }
+
+        if (
+          pageContent.offers.items &&
+          Array.isArray(pageContent.offers.items)
+        ) {
+          pageContent.offers.items.forEach((item, index) => {
+            offersTranslations[`offer_${index}_title`] = cleanHtmlText(
+              item.title
+            );
+            offersTranslations[`offer_${index}_features`] = cleanHtmlText(
+              item.features_list
+            );
+            offersTranslations[`offer_${index}_button`] = cleanHtmlText(
+              item.button_text
+            );
+          });
+        }
+      }
+
+      const howToUseTranslations = {};
+      if (pageContent.how_to_use) {
+        if (pageContent.how_to_use.how_to_use_title) {
+          howToUseTranslations["how_to_use_title"] = cleanHtmlText(
+            pageContent.how_to_use.how_to_use_title
+          );
+        }
+
+        if (
+          pageContent.how_to_use.descriptions &&
+          Array.isArray(pageContent.how_to_use.descriptions)
+        ) {
+          pageContent.how_to_use.descriptions.forEach((desc, index) => {
+            howToUseTranslations[`how_to_use_${index}`] = cleanHtmlText(desc);
+          });
+        }
+      }
+
+      const attractionsTranslations = {};
       if (Array.isArray(attractData)) {
         attractData.forEach((attraction) => {
           const id = attraction._id;
@@ -79,25 +140,31 @@ export default function ButtonTranslate({ onTranslationsChange }) {
             attraction.content?.[selectedCode] || attraction.content?.en || {};
 
           if (langContent.title) {
-            attractionsTranslations[`ATTR_${id}_title`] = langContent.title;
+            attractionsTranslations[`ATTR_${id}_title`] = cleanHtmlText(
+              langContent.title
+            );
           }
           if (langContent.subtitle) {
-            const cleanSubtitle = langContent.subtitle
-              .replace(/<br\s*\/?\s*>/gi, " ")
-              .replace(/\s+/g, " ")
-              .trim();
-            attractionsTranslations[`ATTR_${id}_subtitle`] = cleanSubtitle;
+            attractionsTranslations[`ATTR_${id}_subtitle`] = cleanHtmlText(
+              langContent.subtitle
+            );
           }
-          // Если нужно — можно добавить text, banner и т.д.
         });
       }
 
       const finalTranslations = {
         ...(translationData[selectedCode] || {}),
         ...menuTranslations,
-        ...pageContent,
+
+        subtitle: cleanHtmlText(pageContent.subtitle || ""),
+        header_banner: cleanHtmlText(pageContent.header_banner || ""),
+
         title_line1,
         title_line2,
+
+        ...benefitsTranslations,
+        ...offersTranslations,
+        ...howToUseTranslations,
         ...attractionsTranslations,
       };
 
@@ -107,7 +174,6 @@ export default function ButtonTranslate({ onTranslationsChange }) {
     }
   };
 
-  // Первая загрузка
   useEffect(() => {
     const savedLabel = localStorage.getItem("selectedLang") || "РУССКИЙ";
     const savedLang = languages.find((l) => l.label === savedLabel) || {
