@@ -3,6 +3,8 @@ import ImageSlider from "../components/ImageSlider";
 import BestAttractions from "../components/BestAttractoins";
 import CoolPassBenefits from "../components/CoolPassBenefits";
 import IncludedCoolPass from "../components/IncludedCoolPass";
+import HowToUse from "../components/HowToUse";
+import News from "../components/News";
 import { useTranslation } from "../TranslationContext";
 
 import "../styles/mainPage.css";
@@ -92,6 +94,14 @@ export default function MainPage({ setTranslations }) {
 
       <section>
         <IncludedCoolPass />
+      </section>
+
+      <section>
+        <HowToUse />
+      </section>
+
+      <section>
+        <News />
       </section>
     </div>
   );

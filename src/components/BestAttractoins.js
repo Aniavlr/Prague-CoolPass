@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { useTranslation } from "../TranslationContext";
 
 import "../styles/bestAttractions.css";
@@ -7,26 +7,9 @@ export default function BestAttractions() {
   const scrollContainerRef = useRef(null);
   const [likedCards, setLikedCards] = useState(new Set());
   const [hoveredCard, setHoveredCard] = useState(null);
+  const [currentPage, setCurrentPage] = useState(0);
 
   const t = useTranslation();
-
-  const scrollLeft = () => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollBy({
-        left: -scrollContainerRef.current.clientWidth,
-        behavior: "smooth",
-      });
-    }
-  };
-
-  const scrollRight = () => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollBy({
-        left: scrollContainerRef.current.clientWidth,
-        behavior: "smooth",
-      });
-    }
-  };
 
   const handleLikeClick = (index) => {
     setLikedCards((prev) => {
@@ -110,6 +93,31 @@ export default function BestAttractions() {
       img: "img/pilsner.jpg",
     },
   ];
+
+  const CARDS_PER_VIEW = 4;
+  const TOTAL_CARDS = attractions.length;
+  const TOTAL_PAGES = Math.ceil(TOTAL_CARDS / CARDS_PER_VIEW);
+
+  const CARD_WIDTH = 270;
+  const GAP = 20;
+  const STEP = CARD_WIDTH + GAP; // 290px на карточку
+
+  useEffect(() => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTo({
+        left: currentPage * STEP * CARDS_PER_VIEW,
+        behavior: "smooth",
+      });
+    }
+  }, [currentPage, STEP]);
+
+  const scrollLeft = () => {
+    setCurrentPage((prev) => Math.max(0, prev - 1));
+  };
+
+  const scrollRight = () => {
+    setCurrentPage((prev) => Math.min(TOTAL_PAGES - 1, prev + 1));
+  };
 
   return (
     <>

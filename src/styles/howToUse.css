@@ -1,0 +1,81 @@
+.container {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.howToUse-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
+.howToUse-steps {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  grid-template-columns: repeat(4, 1fr);
+  margin-top: 30px;
+}
+
+.howToUse-title {
+  text-align: left;
+  color: #252c3e;
+  margin-top: 50px;
+  margin-bottom: 0;
+}
+
+h3 {
+  font-family: "Open Sans", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 22px;
+  line-height: 130%;
+  text-transform: uppercase;
+}
+
+.content-use,
+.step-img {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.step-img {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  width: 269px;
+  height: 250px;
+  justify-content: center;
+}
+
+.step-img .link {
+  height: 50px;
+  width: 180px;
+  margin: 15px;
+}
+
+.ordering {
+  margin-top: 14px;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 22px;
+  line-height: 29px;
+  text-align: center;
+  color: #252c3e;
+}
+
+.step-hint {
+  margin-top: 7px;
+  font-family: "Open Sans", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 23px;
+  text-align: center;
+  color: #252c3e;
+}
