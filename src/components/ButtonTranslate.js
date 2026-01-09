@@ -34,12 +34,15 @@ export default function ButtonTranslate({ onTranslationsChange }) {
 
   const loadTranslations = async (selectedCode = "ru") => {
     try {
-      const [translationRes, menuRes, pageRes, attractRes] = await Promise.all([
-        fetch("https://api2.praguecoolpass.com/translation"),
-        fetch("https://api2.praguecoolpass.com/menu"),
-        fetch("https://api2.praguecoolpass.com/pages/5fd771cc072e5479bded0f2b"),
-        fetch("https://api2.praguecoolpass.com/object/attraction/"),
-      ]);
+      const [translationRes, menuRes, pageRes, attractRes] =
+        await Promise.all([
+          fetch("https://api2.praguecoolpass.com/translation"),
+          fetch("https://api2.praguecoolpass.com/menu"),
+          fetch(
+            "https://api2.praguecoolpass.com/pages/5fd771cc072e5479bded0f2b"
+          ),
+          fetch("https://api2.praguecoolpass.com/object/attraction/"),
+        ]);
 
       const [translationData, menuData, pageData, attractData] =
         await Promise.all([

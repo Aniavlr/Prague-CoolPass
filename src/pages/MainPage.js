@@ -6,6 +6,7 @@ import IncludedCoolPass from "../components/IncludedCoolPass";
 import HowToUse from "../components/HowToUse";
 import News from "../components/News";
 import BuyCard from "../components/BuyCard";
+import Reviews from "../components/Reviews";
 import { useTranslation } from "../TranslationContext";
 
 import "../styles/mainPage.css";
@@ -107,6 +108,10 @@ export default function MainPage({ setTranslations }) {
 
       <section>
         <BuyCard />
+      </section>
+
+      <section>
+        <Reviews />
       </section>
     </div>
   );
