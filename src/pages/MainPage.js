@@ -7,6 +7,7 @@ import HowToUse from "../components/HowToUse";
 import News from "../components/News";
 import BuyCard from "../components/BuyCard";
 import Reviews from "../components/Reviews";
+import Footer from "../components/Footer";
 import { useTranslation } from "../TranslationContext";
 
 import "../styles/mainPage.css";
@@ -113,6 +114,8 @@ export default function MainPage({ setTranslations }) {
       <section>
         <Reviews />
       </section>
+
+      <Footer/>
     </div>
   );
 }

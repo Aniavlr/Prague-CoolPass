@@ -1,0 +1,409 @@
+.footer {
+  margin-top: 130px;
+  width: 100%;
+  height: 314px;
+  background: #252c3e;
+  display: flex;
+  justify-content: center;
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: row;
+  margin-top: 42px;
+  max-width: 1140px;
+}
+
+.first-section {
+  margin-right: 27px;
+}
+
+.footer-section {
+  height: auto;
+  margin-top: 0;
+  padding: 0;
+  margin-bottom: 0;
+}
+ol,
+ul {
+  list-style: none;
+}
+
+.footer-content a {
+  text-decoration: none;
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 18px;
+  color: #fff;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.faq-btn {
+  font-family: "Open Sans", sans-serif !important;
+  font-weight: 600;
+  line-height: 48px !important;
+  font-size: 15px !important;
+  height: 48px;
+  background: #da4b07;
+  border: 1px solid #da4b07;
+  border-radius: 5px;
+  text-align: center;
+  margin-bottom: 12px !important;
+  width: auto;
+  white-space: nowrap;
+  padding: 0 5px;
+}
+
+.faq-btn:hover {
+  background: #ef5106;
+  border: 1px solid #ef5106;
+}
+
+a:active,
+a:hover {
+  outline: 0;
+}
+
+.download-links {
+  margin-left: 44px;
+}
+
+.download {
+  text-transform: uppercase;
+}
+
+.about-us {
+  margin-left: 67px;
+}
+
+.app-title,
+.download {
+  font-family: "Open Sans", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18px;
+  color: #fff;
+  margin-bottom: 12px;
+  margin-top: 0;
+}
+
+.appstore {
+  background: url("../../public/img/appstore.png") 50% no-repeat;
+  background-size: cover;
+  margin-bottom: 10.67px;
+  width: 157.13px;
+}
+
+.appstore,
+.download-link-mixin,
+.google-play {
+  height: 43.44px;
+  cursor: pointer;
+}
+
+.google-play {
+  background: url("../../public/img/googleplay.png") 50% no-repeat;
+  background-size: cover;
+  height: 45.1px;
+  width: 157.13px;
+}
+
+.news-and-updates {
+  margin-left: 76px;
+  width: 374px;
+}
+
+.news-and-updates-title {
+  font-family: "Open Sans", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18px;
+  color: #fff;
+  margin-bottom: 17px;
+}
+
+.footer-info-year {
+  margin-top: 14px;
+  margin-bottom: 5px;
+}
+
+.footer-info-year,
+.footer-info {
+  font-family: "Open Sans", sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 23px;
+  line-height: 30px;
+  color: #fff;
+}
+
+.rights-reserved-block {
+  width: 348px;
+  height: 32px;
+  margin-top: 51px;
+  font-family: "Open Sans", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  color: #f9f9fb;
+}
+
+.subscribe-form {
+  min-width: 400px;
+  width: auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+input {
+  width: 333px;
+  height: 48px;
+  background: #fff;
+  border-radius: 5px;
+  border: none;
+  text-indent: 23.75px;
+  font-family: Open Sans, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 23px;
+  padding: 0 106px 0 0;
+  color: #222;
+}
+
+.subscribe-btn {
+  background: #da4b07;
+  border: 2px solid #da4b07;
+  border-radius: 0 5px 5px 0;
+  min-width: 106px;
+  width: auto;
+  height: 48px;
+  margin-left: -100px;
+  padding: 0 15px;
+  white-space: nowrap;
+  text-transform: uppercase;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 130%;
+  color: #fff;
+}
+
+.subscribe-btn:hover {
+  background: #ef5106;
+  border: 2px solid #ef5106;
+}
+
+input:focus {
+  outline: none;
+}
+
+/* Адаптация для планшетов (768px - 1024px) */
+@media screen and (max-width: 1024px) {
+  .footer {
+    height: auto;
+    min-height: 314px;
+    margin-top: 80px;
+    padding: 30px 20px;
+  }
+
+  .footer-content {
+    flex-wrap: wrap;
+    margin-top: 30px;
+    justify-content: space-between;
+    gap: 40px;
+  }
+
+  .news-and-updates {
+    width: 100%;
+    margin-left: 0;
+    order: 1;
+  }
+
+  .first-section,
+  .download-links,
+  .about-us {
+    margin-left: 0;
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .subscribe-form {
+    min-width: 350px;
+    width: 100%;
+  }
+
+  input {
+    width: 100%;
+    max-width: 250px;
+  }
+
+  .rights-reserved-block {
+    width: 100%;
+    margin-top: 40px;
+    order: 2;
+  }
+}
+
+/* Адаптация для мобильных устройств (480px - 767px) */
+@media screen and (max-width: 767px) {
+  .footer {
+    margin-top: 60px;
+    padding: 30px 16px;
+    height: auto;
+  }
+
+  .footer-content {
+    flex-direction: column;
+    margin-top: 20px;
+    gap: 30px;
+  }
+
+  .first-section,
+  .download-links,
+  .about-us {
+    margin-right: 0;
+    margin-bottom: 20px;
+    width: 100%;
+  }
+
+  .news-and-updates {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .subscribe-form {
+    min-width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  input {
+    width: 100%;
+    max-width: none;
+    padding: 0;
+    text-indent: 15px;
+    border-radius: 5px;
+    margin-bottom: 0;
+  }
+
+  .subscribe-btn {
+    width: 100%;
+    max-width: 200px;
+    margin-left: 0;
+    border-radius: 5px;
+    margin-top: 5px;
+  }
+
+  .footer-info-year,
+  .footer-info {
+    font-size: 18px;
+    line-height: 24px;
+  }
+
+  .rights-reserved-block {
+    width: 100%;
+    height: auto;
+    margin-top: 30px;
+    text-align: center;
+  }
+
+  .appstore,
+  .google-play {
+    width: 180px;
+    height: 52px;
+  }
+
+  .faq-btn {
+    width: 100%;
+    max-width: 200px;
+  }
+}
+
+/* Адаптация для маленьких мобильных устройств (до 479px) */
+@media screen and (max-width: 479px) {
+  .footer {
+    padding: 25px 12px;
+    margin-top: 40px;
+  }
+
+  .footer-content {
+    margin-top: 15px;
+    gap: 25px;
+  }
+
+  .subscribe-form {
+    min-width: 100%;
+  }
+
+  input {
+    height: 44px;
+    font-size: 13px;
+  }
+
+  .subscribe-btn {
+    height: 44px;
+    font-size: 14px;
+    max-width: 100%;
+  }
+
+  .footer-info-year,
+  .footer-info {
+    font-size: 16px;
+    line-height: 22px;
+  }
+
+  .app-title,
+  .download,
+  .news-and-updates-title,
+  .footer-content a {
+    font-size: 13px;
+  }
+
+  .faq-btn {
+    height: 44px;
+    line-height: 44px !important;
+    font-size: 14px !important;
+  }
+
+  .rights-reserved-block {
+    font-size: 11px;
+    line-height: 14px;
+  }
+
+  .appstore,
+  .google-play {
+    width: 160px;
+    height: 46px;
+  }
+}
+
+/* Для очень маленьких экранов (до 320px) */
+@media screen and (max-width: 320px) {
+  .footer {
+    padding: 20px 10px;
+  }
+
+  .subscribe-form {
+    gap: 10px;
+  }
+
+  input,
+  .subscribe-btn {
+    height: 42px;
+  }
+
+  .appstore,
+  .google-play {
+    width: 140px;
+    height: 40px;
+  }
+}
