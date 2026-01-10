@@ -171,3 +171,8 @@ h3 {
   text-transform: uppercase;
   padding: 0 20px;
 }
+
+.see-all-wrapper .button-send:hover {
+  background: #ef5106;
+  border: 1px solid #ef5106;
+}

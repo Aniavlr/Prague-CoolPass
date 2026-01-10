@@ -106,6 +106,10 @@ body {
   padding: 0 20px;
 }
 
+.btn-pay:hover {
+  background: #ef5106;
+}
+
 .btn-translate {
   width: 115px;
   height: 35px;
@@ -120,6 +124,10 @@ body {
   text-transform: uppercase;
   color: #ffffff;
   background-color: rgb(37, 44, 62, 1);
+}
+
+.btn-translate:hover {
+  background-color: #2f384f;
 }
 
 .language-select-wrapper {
