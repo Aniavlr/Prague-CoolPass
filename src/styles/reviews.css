@@ -81,6 +81,14 @@ h3 {
   background-image: url("../../public/img/right-arrow.7fb8afe3.svg");
 }
 
+.reviews-left-control.disabled,
+.reviews-right-control.disabled {
+  opacity: 0.35;
+  filter: grayscale(70%);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
 /* Контейнер прокрутки */
 .carousel-scroll-wrapper {
   overflow: hidden;

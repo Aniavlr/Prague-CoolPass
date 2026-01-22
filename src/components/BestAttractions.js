@@ -9,7 +9,7 @@ export default function BestAttractions() {
   const [hoveredCard, setHoveredCard] = useState(null);
   const [currentPage, setCurrentPage] = useState(0);
 
-  const t = useTranslation();
+  const {t} = useTranslation();
 
   const handleLikeClick = (index) => {
     setLikedCards((prev) => {
@@ -102,6 +102,9 @@ export default function BestAttractions() {
   const GAP = 20;
   const STEP = CARD_WIDTH + GAP; // 290px на карточку
 
+  const isFirstPage = currentPage === 0;
+  const isLastPage = currentPage >= TOTAL_PAGES - 1;
+
   useEffect(() => {
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollTo({
@@ -112,11 +115,15 @@ export default function BestAttractions() {
   }, [currentPage, STEP]);
 
   const scrollLeft = () => {
-    setCurrentPage((prev) => Math.max(0, prev - 1));
+    if (!isFirstPage) {
+      setCurrentPage((prev) => Math.max(0, prev - 1));
+    }
   };
 
   const scrollRight = () => {
-    setCurrentPage((prev) => Math.min(TOTAL_PAGES - 1, prev + 1));
+    if (!isLastPage) {
+      setCurrentPage((prev) => Math.min(TOTAL_PAGES - 1, prev + 1));
+    }
   };
 
   return (
@@ -132,7 +139,7 @@ export default function BestAttractions() {
         <div className="carousel-container">
           {/* Стрелка влево */}
           <div
-            className="left-control"
+            className={`left-control ${isFirstPage ? "disabled" : ""}`}
             onClick={scrollLeft}
             role="button"
             tabIndex={0}
@@ -206,7 +213,7 @@ export default function BestAttractions() {
 
           {/* Стрелка вправо */}
           <div
-            className="right-control"
+            className={`right-control ${isLastPage ? "disabled" : ""}`}
             onClick={scrollRight}
             role="button"
             tabIndex={0}

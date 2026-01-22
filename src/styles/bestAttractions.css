@@ -216,45 +216,10 @@
   will-change: transform;
 }
 
-/* Адаптивность для разных экранов */
-@media (max-width: 1200px) {
-  .card-wrapper {
-    flex: 0 0 calc(33.333% - 14px); /* 3 карточки */
-  }
-}
-
-@media (max-width: 900px) {
-  .card-wrapper {
-    flex: 0 0 calc(50% - 10px); /* 2 карточки */
-  }
-}
-
-@media (max-width: 600px) {
-  .card-wrapper {
-    flex: 0 0 100%; /* 1 карточка */
-  }
-
-  .left-control,
-  .right-control {
-    width: 40px;
-    height: 40px;
-    background-size: 12px;
-  }
-
-  .left-control {
-    left: -45px;
-  }
-
-  .right-control {
-    right: -45px;
-  }
-
-  .card-footer.expanded {
-    height: 120px;
-  }
-
-  .attraction-subtitle {
-    font-size: 11px;
-    line-height: 1.4;
-  }
+.left-control.disabled,
+.right-control.disabled {
+  opacity: 0.35;
+  filter: grayscale(70%);
+  cursor: not-allowed;
+  pointer-events: none;
 }

@@ -15,7 +15,6 @@ body {
   align-items: center;
   justify-content: center;
   height: 43px;
-  position: relative; /* Меняем на relative, так как позиционирование теперь в nav-wrapper */
   z-index: 1000;
 }
 
@@ -183,17 +182,21 @@ body {
 }
 
 .nav-wrapper {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 1000; /* Высокий z-index чтобы быть над всем */
+  z-index: 1000;
+}
+
+.nav-wrapper.hidden {
+  transform: translateY(-100%);
 }
 
 .slider-section {
   position: relative;
   width: 100%;
-  height: 550px; /* Фиксированная высота слайдера */
+  height: 550px;
   margin-top: 0;
 }
 
@@ -235,14 +238,14 @@ body {
 }
 
 .title-block {
-  margin-top: 140px;
+  margin-top: 115px;
   padding: 9px 0 10px 22px;
   text-align: left;
 }
 
 .underbar-text {
   align-self: center;
-  font-family: Open Sans, sans-serif;
+  font-family: "Open Sans", sans-serif;
   font-style: normal;
   font-weight: 700;
   font-size: 14px;
@@ -284,7 +287,7 @@ body {
   height: 37px;
   padding: 0;
   text-indent: 12px;
-  font-family: Open Sans, sans-serif;
+  font-family: "Open Sans", sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -296,12 +299,6 @@ body {
 .attractions-search:focus {
   outline: none;
 }
-
-/* .autocomplete__box.autocomplete__searching {
-  border-radius: 5px 5px 0 0;
-  border: 1px solid #fdca2e;
-  border-bottom: none;
-} */
 
 .autocomplete__box .autocomplete__inputs {
   box-sizing: border-box;
@@ -323,7 +320,7 @@ body {
   cursor: pointer;
   color: #fff;
   line-height: 35px;
-  font-family: Open Sans Semibold, sans-serif;
+  font-family: "Open Sans", sans-serif;
   font-weight: 600;
   font-size: 15px;
   background: #da4b07;
@@ -340,11 +337,95 @@ body {
 }
 
 h3 {
-  font-family: Open Sans Bold, sans-serif;
+  font-family: "Open Sans", sans-serif;
   font-weight: 700;
   font-style: normal;
   font-size: 22px;
   line-height: 130%;
   text-transform: uppercase;
   color: #252c3e;
+}
+
+.autocomplete__box {
+  border: none;
+  border-radius: 5px;
+}
+
+.autocomplete__box.autocomplete__searching {
+  border-radius: 5px 5px 0 0 !important;
+  border: 1px solid #fdca2e;
+  border-bottom: none;
+  background: #fff;
+}
+
+/* Список результатов */
+.autocomplete__results {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background: #f8f8f8;
+  border: 1px solid #fdca2e;
+  border-top: none;
+  border-radius: 0 0 5px 5px;
+  max-height: 280px;
+  overflow-y: auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  width: 272px;
+  margin-top: -1px;
+}
+
+.autocomplete__results__item {
+  font-family: "Open Sans", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 23px;
+  /* text-transform: capitalize; */
+  color: #252527;
+  padding: 3px 15px 8px;
+  position: relative;
+}
+
+.autocomplete__results__item:hover,
+.autocomplete__results__item:focus {
+  background: #f0f0f5;
+}
+
+.autocomplete__results::-webkit-scrollbar {
+  width: 6px;
+}
+
+.autocomplete__results::-webkit-scrollbar-thumb {
+  background: #c0c0c0;
+  border-radius: 3px;
+}
+
+.autocomplete__results::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.attractions-search::placeholder {
+  color: #8a8a9a;
+  font-weight: 400;
+}
+
+.magnifying-glass img {
+  pointer-events: auto;
+}
+
+.magnifying-glass {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 37px;
+  width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 10;
 }

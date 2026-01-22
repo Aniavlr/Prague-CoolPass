@@ -88,6 +88,16 @@ h3 {
   background-image: url("../../public/img/right-arrow-orange.44f57960.svg");
 }
 
+
+.buy-card-left-control.disabled,
+.buy-card-right-control.disabled {
+  opacity: 0.35;
+  filter: grayscale(70%);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+
 .card-header {
   height: 112px;
   width: 356px;

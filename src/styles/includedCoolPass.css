@@ -176,3 +176,79 @@ h3 {
   background: #ef5106;
   border: 1px solid #ef5106;
 }
+
+/* ============================================= */
+/*        ЕЩЁ МЕНЬШЕ КАРТОЧКИ НА МОБИЛЬНЫХ      */
+/* ============================================= */
+
+/* Очень маленькие экраны + большинство телефонов (≤ 767px) */
+@media (max-width: 767px) {
+  .content-coolPass {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .card {
+    aspect-ratio: 4 / 2.4; /* делаем заметно компактнее */
+    max-width: 100%;
+    border-radius: 0px;
+  }
+
+  .popup-content {
+    border-radius: 0;
+  }
+
+  .exclusive-offer-btn {
+    /* Кнопка тоже чуть меньше */
+    transform: scale(0.92);
+  }
+
+  .exclusive-offer-btn .offer-text {
+    font-size: 14px; /* уменьшаем текст кнопки */
+    padding: 0 10px;
+    line-height: 1.25;
+  }
+
+  /* На тач-устройствах показываем оверлей при нажатии */
+  .card:active .exclusive-offer-btn {
+    opacity: 1;
+  }
+}
+
+/* Планшеты вертикальные и горизонтальные (768–1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .content-coolPass {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+  }
+
+  .card {
+    aspect-ratio: 5 / 3.1; /* чуть компактнее, чем на десктопе */
+    max-width: 100%;
+  }
+
+  .exclusive-offer-btn {
+    transform: scale(0.95); /* лёгкое уменьшение кнопки */
+  }
+
+  .exclusive-offer-btn .offer-text {
+    font-size: 15.5px;
+  }
+}
+
+/* Очень маленькие телефоны (≤ 480px) — максимальное уменьшение */
+@media (max-width: 480px) {
+  .card {
+    aspect-ratio: 4 / 2.35; /* максимально компактно, но всё ещё красиво */
+    border-radius: 8px;
+  }
+
+  .exclusive-offer-btn {
+    transform: scale(0.88);
+  }
+
+  .exclusive-offer-btn .offer-text {
+    font-size: 13.5px;
+    padding: 0 8px;
+  }
+}

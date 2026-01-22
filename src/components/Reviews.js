@@ -3,7 +3,7 @@ import { useTranslation } from "../TranslationContext";
 import "../styles/reviews.css";
 
 export default function Reviews() {
-  const t = useTranslation();
+  const {t} = useTranslation();
   const scrollContainerRef = useRef(null);
   const [currentPage, setCurrentPage] = useState(0);
   const [reviewsData, setReviewsData] = useState([]);
@@ -90,6 +90,9 @@ export default function Reviews() {
   const GAP = 20;
   const STEP = CARD_WIDTH + GAP;
 
+  const isFirstPage = currentPage === 0;
+  const isLastPage = currentPage >= TOTAL_PAGES - 1;
+
   useEffect(() => {
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollTo({
@@ -100,11 +103,15 @@ export default function Reviews() {
   }, [currentPage, STEP]);
 
   const scrollLeft = () => {
-    setCurrentPage((prev) => Math.max(0, prev - 1));
+    if (!isFirstPage) {
+      setCurrentPage((prev) => Math.max(0, prev - 1));
+    }
   };
 
   const scrollRight = () => {
-    setCurrentPage((prev) => Math.min(TOTAL_PAGES - 1, prev + 1));
+    if (!isLastPage) {
+      setCurrentPage((prev) => Math.min(TOTAL_PAGES - 1, prev + 1));
+    }
   };
 
   if (reviewsData.length === 0) {
@@ -137,7 +144,7 @@ export default function Reviews() {
       <div className="reviews-carousel">
         <div className="reviews-carousel-container">
           <div
-            className="reviews-left-control"
+            className={`reviews-left-control ${isFirstPage ? "disabled" : ""}`}
             onClick={scrollLeft}
             role="button"
             tabIndex={0}
@@ -221,7 +228,7 @@ export default function Reviews() {
           </div>
 
           <div
-            className="reviews-right-control"
+            className={`reviews-right-control ${isLastPage ? "disabled" : ""}`}
             onClick={scrollRight}
             role="button"
             tabIndex={0}

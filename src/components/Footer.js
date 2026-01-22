@@ -2,7 +2,7 @@ import { useTranslation } from "../TranslationContext";
 import "../styles/footer.css";
 
 export default function Footer() {
-  const t = useTranslation();
+  const {t} = useTranslation();
 
   const getTranslation = (key, defaultText) => {
     const translation = t(key);

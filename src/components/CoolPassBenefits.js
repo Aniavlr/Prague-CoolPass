@@ -4,7 +4,7 @@ import "../styles/coolPassBenefits.css";
 
 export default function CoolPassBenefits() {
   const [openIndex, setOpenIndex] = useState(0);
-  const t = useTranslation();
+  const {t} = useTranslation();
 
   const toggleSpoiler = (index) => {
     setOpenIndex(openIndex === index ? openIndex : index);

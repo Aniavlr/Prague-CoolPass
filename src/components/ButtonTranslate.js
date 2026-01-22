@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { cleanHtmlText } from "../helper";
+import { cleanHtmlText, normalizeTextCase } from "../helper";
 
 const languages = [
   { code: "en", label: "English" },
@@ -11,6 +11,11 @@ const languages = [
   { code: "ru", label: "Русский" },
   { code: "pl", label: "Polski" },
 ];
+
+const processText = (text) => {
+  const cleaned = cleanHtmlText(text || "");
+  return normalizeTextCase(cleaned);
+};
 
 export default function ButtonTranslate({ onTranslationsChange }) {
   const [currentLabel, setCurrentLabel] = useState("РУССКИЙ");
@@ -34,15 +39,12 @@ export default function ButtonTranslate({ onTranslationsChange }) {
 
   const loadTranslations = async (selectedCode = "ru") => {
     try {
-      const [translationRes, menuRes, pageRes, attractRes] =
-        await Promise.all([
-          fetch("https://api2.praguecoolpass.com/translation"),
-          fetch("https://api2.praguecoolpass.com/menu"),
-          fetch(
-            "https://api2.praguecoolpass.com/pages/5fd771cc072e5479bded0f2b"
-          ),
-          fetch("https://api2.praguecoolpass.com/object/attraction/"),
-        ]);
+      const [translationRes, menuRes, pageRes, attractRes] = await Promise.all([
+        fetch("https://api2.praguecoolpass.com/translation"),
+        fetch("https://api2.praguecoolpass.com/menu"),
+        fetch("https://api2.praguecoolpass.com/pages/5fd771cc072e5479bded0f2b"),
+        fetch("https://api2.praguecoolpass.com/object/attraction/"),
+      ]);
 
       const [translationData, menuData, pageData, attractData] =
         await Promise.all([
@@ -155,6 +157,18 @@ export default function ButtonTranslate({ onTranslationsChange }) {
         });
       }
 
+      const attractionsList = attractData
+        .map((attr) => {
+          const langContent =
+            attr.content?.[selectedCode] || attr.content?.en || {};
+          return {
+            _id: attr._id,
+            title: processText(langContent.title || "Без названия"),
+            type: attr.type || "attraction",
+          };
+        })
+        .filter((item) => item.title && item.title !== "Без названия");
+
       const finalTranslations = {
         ...(translationData[selectedCode] || {}),
         ...menuTranslations,
@@ -169,6 +183,7 @@ export default function ButtonTranslate({ onTranslationsChange }) {
         ...offersTranslations,
         ...howToUseTranslations,
         ...attractionsTranslations,
+        attractionsList,
       };
 
       onTranslationsChange(finalTranslations);

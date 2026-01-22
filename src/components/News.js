@@ -3,7 +3,8 @@ import { useTranslation } from "../TranslationContext";
 import "../styles/news.css";
 
 export default function News() {
-  const t = useTranslation();
+  const {t} = useTranslation();
+
   return (
     <>
       <div className="container">

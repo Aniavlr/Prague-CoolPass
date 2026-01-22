@@ -23,3 +23,50 @@ export const cleanHtmlText = (htmlString) => {
       .trim()
   );
 };
+
+export const normalizeTextCase = (text) => {
+  if (!text) return text;
+
+  // Если весь текст в верхнем регистре
+  if (text === text.toUpperCase()) {
+    // Преобразуем первую букву каждого слова в заглавную, остальные в строчные
+    return text
+      .toLowerCase()
+      .split(" ")
+      .map((word) => {
+        // Исключения для коротких слов (предлогов, союзов и т.д.)
+        const shortWords = [
+          "a",
+          "an",
+          "and",
+          "as",
+          "at",
+          "but",
+          "by",
+          "for",
+          "in",
+          "of",
+          "on",
+          "or",
+          "the",
+          "to",
+          "with",
+        ];
+        if (shortWords.includes(word.toLowerCase())) {
+          return word.toLowerCase();
+        }
+        return word.charAt(0).toUpperCase() + word.slice(1);
+      })
+      .join(" ");
+  }
+
+  return text;
+};
+
+export function debounce(func, wait) {
+  let timeout;
+  return (...args) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func(...args), wait);
+  };
+}

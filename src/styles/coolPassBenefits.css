@@ -137,3 +137,117 @@ h3 {
 .spoiler-paragraph:last-child {
   margin-bottom: 0;
 }
+
+/* Базовые стили остаются как были, добавляем только медиа-запросы */
+
+@media (max-width: 991px) {
+  .benefits-coolpass-container {
+    padding: 0 15px;
+  }
+
+  .benefits-content-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .phone-content {
+    margin-left: 0;
+    margin-bottom: 40px;
+  }
+
+  /* Центрируем телефон */
+  .mobile-phone {
+    margin: 40px auto 0;
+  }
+
+  .prague-card-image {
+    margin-top: 188px;
+    margin-left: auto;
+    margin-right: auto;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .title-box {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .spoiler-title-text {
+    font-size: 17px;
+  }
+
+  .spoiler-text {
+    width: 100%;
+  }
+}
+
+@media (max-width: 767px) {
+  .benefits-title {
+    text-align: center;
+    margin: 30px 0 20px;
+  }
+
+  h3 {
+    font-size: 20px;
+  }
+
+  .mobile-phone {
+    width: 220px;
+    height: 440px; /* сохраняем пропорции ≈ 1 : 2 */
+    margin-top: 30px;
+  }
+
+  .prague-card-image {
+    width: 280px;
+    height: 187px;
+    margin-top: 210px;
+  }
+
+  .title-box {
+    height: 80px;
+    padding: 0 15px;
+  }
+
+  .spoiler-title-text {
+    font-size: 16px;
+    line-height: 1.3;
+  }
+
+  .box-content.active {
+    padding: 15px 18px;
+  }
+
+  .spoiler-text,
+  .spoiler-paragraph {
+    font-size: 14px;
+    line-height: 22px;
+  }
+}
+
+@media (max-width: 480px) {
+  .mobile-phone {
+    width: 180px;
+    height: 360px;
+  }
+
+  .prague-card-image {
+    width: 230px;
+    height: 154px;
+    margin-top: 172px;
+  }
+
+  .title-box {
+    height: 70px;
+  }
+
+  .spoiler-title-text {
+    font-size: 15px;
+  }
+
+  .spoiler-text,
+  .spoiler-paragraph {
+    font-size: 13.5px;
+    line-height: 21px;
+  }
+}

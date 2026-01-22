@@ -3,7 +3,7 @@ import { useTranslation } from "../TranslationContext";
 import "../styles/howToUse.css";
 
 export default function HowToUse() {
-  const t = useTranslation();
+  const {t} = useTranslation();
 
   return (
     <>

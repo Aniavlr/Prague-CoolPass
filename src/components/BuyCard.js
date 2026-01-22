@@ -10,7 +10,7 @@ export default function BuyCard() {
     adult: Array(8).fill(0),
     student: Array(8).fill(0),
   });
-  const t = useTranslation();
+  const {t} = useTranslation();
 
   const cards = [
     { days: 1, adultPrice: 72, studentPrice: 52 },
@@ -30,6 +30,9 @@ export default function BuyCard() {
   const GAP = 20;
   const STEP = CARD_WIDTH + GAP; // 375px на карточку
 
+  const isFirstPage = currentPage === 0;
+  const isLastPage = currentPage >= TOTAL_PAGES - 1;
+
   useEffect(() => {
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollTo({
@@ -40,11 +43,15 @@ export default function BuyCard() {
   }, [currentPage, STEP]);
 
   const scrollLeft = () => {
-    setCurrentPage((prev) => Math.max(0, prev - 1));
+    if (!isFirstPage) {
+      setCurrentPage((prev) => Math.max(0, prev - 1));
+    }
   };
 
   const scrollRight = () => {
-    setCurrentPage((prev) => Math.min(TOTAL_PAGES - 1, prev + 1));
+    if (!isLastPage) {
+      setCurrentPage((prev) => Math.min(TOTAL_PAGES - 1, prev + 1));
+    }
   };
 
   const handleIncrement = (index, type) => {
@@ -91,7 +98,7 @@ export default function BuyCard() {
         <div className="buy-card-carousel">
           {/* Стрелка влево */}
           <div
-            className="buy-card-left-control"
+            className={`buy-card-left-control ${isFirstPage ? "disabled" : ""}`}
             onClick={scrollLeft}
             role="button"
             tabIndex={0}
@@ -203,7 +210,7 @@ export default function BuyCard() {
 
           {/* Стрелка вправо */}
           <div
-            className="buy-card-right-control"
+            className={`buy-card-right-control ${isLastPage ? "disabled" : ""}`}
             onClick={scrollRight}
             role="button"
             tabIndex={0}

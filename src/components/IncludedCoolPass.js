@@ -4,7 +4,7 @@ import "../styles/includedCoolPass.css";
 
 export default function IncludedCoolPass() {
   const [hoveredCard, setHoveredCard] = useState(null);
-  const t = useTranslation();
+  const {t} = useTranslation();
 
   const handleMouseEnter = (index) => {
     setHoveredCard(index);

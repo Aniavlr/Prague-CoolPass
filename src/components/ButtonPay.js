@@ -1,7 +1,7 @@
 import { useTranslation } from "../TranslationContext";
 
 export default function ButtonPay() {
-  const t = useTranslation();
+  const {t} = useTranslation();
 
   return (
     <a href="*" className="btn-pay">
