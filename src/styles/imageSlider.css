@@ -2,14 +2,13 @@
   width: 100%;
   height: 550px;
   position: relative;
-  overflow: hidden; /* Скрывает выезжающие слайды */
+  overflow: hidden;
   margin: 0;
   padding: 0;
 }
 
 .slider-wrapper {
   height: 100%;
-  /* Нет width — flex сам растянет */
 }
 
 .slide-layer {
@@ -46,4 +45,17 @@
 
 .indicator:hover {
   background: rgb(218, 75, 7);
+}
+
+@media only screen and (min-width: 320px) and (max-width: 768px) {
+  .slider-container {
+    min-height: 244px;
+    height: 244px;
+  }
+
+  .indicator{
+    width: 7px;
+    height: 7px;
+    
+  }
 }

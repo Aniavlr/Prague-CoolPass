@@ -23,7 +23,6 @@
   margin: 0 auto;
 }
 
-/* Стрелки */
 .left-control,
 .right-control {
   position: absolute;
@@ -38,6 +37,7 @@
   z-index: 10;
   opacity: 0.7;
   transition: opacity 0.3s;
+  touch-action: manipulation;
 }
 
 .left-control:hover,
@@ -55,17 +55,28 @@
   background-image: url("../../public/img/right-arrow.7fb8afe3.svg");
 }
 
-/* Контейнер прокрутки */
 .carousel-scroll-wrapper {
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
   width: 100%;
+  cursor: grab;
 }
 
-/* Каждая карточка */
+.carousel-scroll-wrapper:active {
+  cursor: grabbing;
+}
+
+.carousel-scroll-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
 .card-wrapper {
   flex: 0 0 270px;
   height: 204px;
-  transition: opacity 0.3s ease;
   cursor: pointer;
 }
 
@@ -79,6 +90,8 @@
   width: 270px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   transition: transform 0.3s ease;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 .card-benefit {
@@ -115,6 +128,7 @@
   align-items: flex-start;
   height: 60px;
   overflow: hidden;
+  pointer-events: auto;
 }
 
 .card-footer.expanded {
@@ -144,7 +158,6 @@
   text-overflow: ellipsis;
 }
 
-/* Заголовок в расширенном состоянии */
 .card-footer.expanded .attraction-title {
   white-space: normal;
   margin-bottom: 8px;
@@ -160,11 +173,9 @@
   margin: 0;
   max-height: 0;
   opacity: 0;
-
   overflow: hidden;
 }
 
-/* Подзаголовок в расширенном состоянии */
 .card-footer.expanded .attraction-subtitle {
   max-height: 48px;
   opacity: 1;
@@ -181,6 +192,8 @@
   opacity: 0.7;
   flex-shrink: 0;
   margin-top: auto;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 .like-btn-active {
@@ -193,6 +206,8 @@
   opacity: 1;
   flex-shrink: 0;
   margin-top: auto;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 .like-btn-active,
@@ -212,7 +227,6 @@
   display: flex;
   gap: 20px;
   padding: 10px 0;
-  transition: transform 0.5s ease-in-out;
   will-change: transform;
 }
 
@@ -222,4 +236,66 @@
   filter: grayscale(70%);
   cursor: not-allowed;
   pointer-events: none;
+}
+
+@media only screen and (max-width: 768px) {
+  .card-wrapper {
+    flex: 0 0 280px;
+    height: 200px;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+
+  .card-container {
+    width: 280px;
+    height: 200px;
+  }
+
+  .carousel-track {
+    gap: 15px;
+    padding: 10px 20px;
+  }
+
+  .carousel-scroll-wrapper {
+    scroll-snap-type: x mandatory;
+    scroll-padding: 0 20px;
+    -webkit-overflow-scrolling: touch;
+    overflow-x: auto !important;
+    overscroll-behavior-x: contain;
+  }
+
+  .left-control,
+  .right-control {
+    display: none !important;
+  }
+
+  .card-container a {
+    display: block;
+    height: 100%;
+    width: 100%;
+    pointer-events: none;
+  }
+
+  .card-container a .card-footer,
+  .card-container a .card-benefit {
+    pointer-events: auto;
+  }
+
+  @supports (-webkit-touch-callout: none) {
+    .carousel-scroll-wrapper {
+      -webkit-overflow-scrolling: auto;
+    }
+  }
+}
+
+@media only screen and (min-width: 769px) {
+  .carousel-scroll-wrapper {
+    overflow-x: auto;
+    scroll-snap-type: none;
+  }
+
+  .left-control,
+  .right-control {
+    display: block !important;
+  }
 }

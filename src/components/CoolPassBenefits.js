@@ -24,42 +24,40 @@ export default function CoolPassBenefits() {
       <div className="benefits-coolpass">
         <div className="benefits-coolpass-container">
           <div className="benefits-content-container">
-            <div className="news-tabs-container">
-              <div className="content">
-                {[...Array(BENEFITS_COUNT)].map((_, index) => {
-                  const title = t(`benefit_${index}_title`) || `Заголовок преимущества ${index + 1}`;
-                  const rawText = t(`benefit_${index}_text`) || "";
+            <div className="content">
+              {[...Array(BENEFITS_COUNT)].map((_, index) => {
+                const title = t(`benefit_${index}_title`) || `Заголовок преимущества ${index + 1}`;
+                const rawText = t(`benefit_${index}_text`) || "";
 
-                  const paragraphs = rawText
-                    .split(/\n\s*\n/)
-                    .map(p => p.trim())
-                    .filter(p => p.length > 0);
+                const paragraphs = rawText
+                  .split(/\n\s*\n/)
+                  .map(p => p.trim())
+                  .filter(p => p.length > 0);
 
-                  return (
+                return (
+                  <div
+                    key={index}
+                    className="spoiler"
+                    onClick={() => toggleSpoiler(index)}
+                  >
+                    <div className="title-box">
+                      <h4 className="spoiler-title-text">{title}</h4>
+                    </div>
+
                     <div
-                      key={index}
-                      className="spoiler"
-                      onClick={() => toggleSpoiler(index)}
+                      className={`box-content ${openIndex === index ? "active" : ""}`}
                     >
-                      <div className="title-box">
-                        <h4 className="spoiler-title-text">{title}</h4>
-                      </div>
-
-                      <div
-                        className={`box-content ${openIndex === index ? "active" : ""}`}
-                      >
-                        <div className="spoiler-text">
-                          {paragraphs.map((paragraph, i) => (
-                            <p key={i} className="spoiler-paragraph">
-                              {paragraph}
-                            </p>
-                          ))}
-                        </div>
+                      <div className="spoiler-text">
+                        {paragraphs.map((paragraph, i) => (
+                          <p key={i} className="spoiler-paragraph">
+                            {paragraph}
+                          </p>
+                        ))}
                       </div>
                     </div>
-                  );
-                })}
-              </div>
+                  </div>
+                );
+              })}
             </div>
 
             <div className="phone-content">

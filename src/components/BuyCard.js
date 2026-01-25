@@ -1,16 +1,29 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useTranslation } from "../TranslationContext";
-
 import "../styles/buyCard.css";
 
 export default function BuyCard() {
   const scrollContainerRef = useRef(null);
   const [currentPage, setCurrentPage] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+  const [touchStartX, setTouchStartX] = useState(0);
   const [counts, setCounts] = useState({
     adult: Array(8).fill(0),
     student: Array(8).fill(0),
   });
   const {t} = useTranslation();
+
+  // Определяем мобильное устройство
+  useEffect(() => {
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkIfMobile();
+    window.addEventListener('resize', checkIfMobile);
+    
+    return () => window.removeEventListener('resize', checkIfMobile);
+  }, []);
 
   const cards = [
     { days: 1, adultPrice: 72, studentPrice: 52 },
@@ -23,24 +36,76 @@ export default function BuyCard() {
     { days: 10, adultPrice: 160, studentPrice: 120 },
   ];
 
-  const CARDS_PER_VIEW = 3;
-  const TOTAL_PAGES = Math.ceil(cards.length / CARDS_PER_VIEW); // 3 страницы: 1-3, 4-6, 7-8
+  // Разные настройки для десктопа и мобильных
+  const DESKTOP_CARDS_PER_VIEW = 3;
+  const MOBILE_CARDS_PER_VIEW = 1;
+  
+  const CARDS_PER_VIEW = isMobile ? MOBILE_CARDS_PER_VIEW : DESKTOP_CARDS_PER_VIEW;
+  const TOTAL_PAGES = Math.ceil(cards.length / CARDS_PER_VIEW);
 
   const CARD_WIDTH = 355;
   const GAP = 20;
-  const STEP = CARD_WIDTH + GAP; // 375px на карточку
+  const STEP = CARD_WIDTH + GAP;
 
   const isFirstPage = currentPage === 0;
   const isLastPage = currentPage >= TOTAL_PAGES - 1;
 
+
   useEffect(() => {
-    if (scrollContainerRef.current) {
+    setCurrentPage(0);
+  }, [isMobile]);
+
+  // Обработчики свайпа
+  const handleTouchStart = (e) => {
+    setTouchStartX(e.touches[0].clientX);
+  };
+
+  const handleTouchEnd = (e) => {
+    if (!isMobile) return;
+    
+    const touchEndX = e.changedTouches[0].clientX;
+    const deltaX = touchStartX - touchEndX;
+    const threshold = 50; // Минимальное расстояние для свайпа
+    
+    // Свайп вправо (показать предыдущую карточку)
+    if (deltaX > threshold && !isFirstPage) {
+      setCurrentPage(prev => Math.max(0, prev - 1));
+    }
+    // Свайп влево (показать следующую карточку)
+    else if (deltaX < -threshold && !isLastPage) {
+      setCurrentPage(prev => Math.min(cards.length - 1, prev + 1));
+    }
+  };
+
+  // Обработка скролла колесиком мыши и касанием
+  const handleScroll = () => {
+    if (!scrollContainerRef.current || !isMobile) return;
+    
+    const container = scrollContainerRef.current;
+    const scrollLeft = container.scrollLeft;
+    const cardIndex = Math.round(scrollLeft / (CARD_WIDTH + GAP));
+    
+    if (cardIndex >= 0 && cardIndex < cards.length) {
+      setCurrentPage(cardIndex);
+    }
+  };
+
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+    
+    container.addEventListener('scroll', handleScroll);
+    return () => container.removeEventListener('scroll', handleScroll);
+  }, [isMobile]);
+
+  useEffect(() => {
+    if (scrollContainerRef.current && !isMobile) {
       scrollContainerRef.current.scrollTo({
         left: currentPage * STEP * CARDS_PER_VIEW,
         behavior: "smooth",
       });
     }
-  }, [currentPage, STEP]);
+  }, [currentPage, STEP, CARDS_PER_VIEW, isMobile]);
 
   const scrollLeft = () => {
     if (!isFirstPage) {
@@ -51,6 +116,25 @@ export default function BuyCard() {
   const scrollRight = () => {
     if (!isLastPage) {
       setCurrentPage((prev) => Math.min(TOTAL_PAGES - 1, prev + 1));
+    }
+  };
+
+  // Прямой переход к карточке (для мобильных)
+  const goToCard = (cardIndex) => {
+    if (isMobile) {
+      // На мобильных каждая карточка - отдельная страница
+      setCurrentPage(cardIndex);
+      // Прокручиваем к карточке
+      if (scrollContainerRef.current) {
+        scrollContainerRef.current.scrollTo({
+          left: cardIndex * (CARD_WIDTH + GAP),
+          behavior: "smooth",
+        });
+      }
+    } else {
+      // На десктопе определяем страницу по индексу карточки
+      const page = Math.floor(cardIndex / DESKTOP_CARDS_PER_VIEW);
+      setCurrentPage(page);
     }
   };
 
@@ -96,7 +180,7 @@ export default function BuyCard() {
 
       <div className="calculator-section">
         <div className="buy-card-carousel">
-          {/* Стрелка влево */}
+        
           <div
             className={`buy-card-left-control ${isFirstPage ? "disabled" : ""}`}
             onClick={scrollLeft}
@@ -105,8 +189,13 @@ export default function BuyCard() {
             aria-label="Предыдущие карточки"
           />
 
-          {/* Контейнер со скроллом */}
-          <div className="buy-card-scroll-wrapper" ref={scrollContainerRef}>
+         
+          <div 
+            className="buy-card-scroll-wrapper" 
+            ref={scrollContainerRef}
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
+          >
             <div className="buy-card-track">
               {cards.map((card, index) => (
                 <div key={index} className="calculator-container">
@@ -121,7 +210,7 @@ export default function BuyCard() {
                   </div>
 
                   <div className="card-body">
-                    {/* Взрослый */}
+                   
                     <div className="adult-card-calculator">
                       <p className="adult-calculator-label">
                         {t("ADULT") || "Взрослый"}
@@ -146,13 +235,13 @@ export default function BuyCard() {
                         >
                           <div className="plus">
                             <span className="vertical"></span>
-                            <span className="horizontal"></span>
+                            <span className="decrement"></span>
                           </div>
                         </div>
                       </div>
                     </div>
 
-                    {/* Студенты / Дети */}
+                 
                     <div className="child-card-calculator">
                       <p className="student-calculator-label">
                         {t("STUDENT_CHILD") || "Студенты /Дети"}
@@ -178,13 +267,13 @@ export default function BuyCard() {
                         >
                           <div className="plus">
                             <span className="vertical"></span>
-                            <span className="horizontal"></span>
+                            <span className="decrement"></span>
                           </div>
                         </div>
                       </div>
                     </div>
 
-                    {/* Итог */}
+                    
                     <div className="total-price-section">
                       <div className="total-price">
                         <p className="total-price-label">
@@ -208,7 +297,7 @@ export default function BuyCard() {
             </div>
           </div>
 
-          {/* Стрелка вправо */}
+         
           <div
             className={`buy-card-right-control ${isLastPage ? "disabled" : ""}`}
             onClick={scrollRight}
@@ -217,19 +306,38 @@ export default function BuyCard() {
             aria-label="Следующие карточки"
           />
         </div>
+        
+        
         <div className="pagination">
-          {Array.from({ length: TOTAL_PAGES }).map((_, pageIndex) => (
-            <span
-              key={pageIndex}
-              className={`bullet ${
-                currentPage === pageIndex ? "bullet-active" : ""
-              }`}
-              onClick={() => setCurrentPage(pageIndex)}
-              role="button"
-              tabIndex={0}
-              aria-label={`Перейти на страницу ${pageIndex + 1}`}
-            />
-          ))}
+          {isMobile ? (
+           
+            Array.from({ length: cards.length }).map((_, index) => (
+              <span
+                key={index}
+                className={`bullet ${
+                  currentPage === index ? "bullet-active" : ""
+                }`}
+                onClick={() => goToCard(index)}
+                role="button"
+                tabIndex={0}
+                aria-label={`Перейти к карточке ${index + 1} дней`}
+              />
+            ))
+          ) : (
+        
+            Array.from({ length: TOTAL_PAGES }).map((_, pageIndex) => (
+              <span
+                key={pageIndex}
+                className={`bullet ${
+                  currentPage === pageIndex ? "bullet-active" : ""
+                }`}
+                onClick={() => setCurrentPage(pageIndex)}
+                role="button"
+                tabIndex={0}
+                aria-label={`Перейти на страницу ${pageIndex + 1}`}
+              />
+            ))
+          )}
         </div>
       </div>
 

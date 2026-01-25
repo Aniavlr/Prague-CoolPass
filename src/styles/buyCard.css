@@ -41,10 +41,17 @@ h3 {
 }
 
 .buy-card-scroll-wrapper {
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x mandatory; 
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
   flex: 1;
   max-width: 1140px;
-  margin: 0;
+  width: 100%;
+  touch-action: pan-x;
 }
 
 .buy-card-track {
@@ -56,6 +63,8 @@ h3 {
 .calculator-container {
   flex: 0 0 355px;
   height: 398px;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
 }
 
 .buy-card-left-control,
@@ -81,13 +90,12 @@ h3 {
 
 .buy-card-left-control {
   background-image: url("../../public/img/right-arrow-orange.44f57960.svg");
-  transform: translateY(-50%) scaleX(-1); /* зеркало для левой стрелки */
+  transform: translateY(-50%) scaleX(-1);
 }
 
 .buy-card-right-control {
   background-image: url("../../public/img/right-arrow-orange.44f57960.svg");
 }
-
 
 .buy-card-left-control.disabled,
 .buy-card-right-control.disabled {
@@ -96,7 +104,6 @@ h3 {
   cursor: not-allowed;
   pointer-events: none;
 }
-
 
 .card-header {
   height: 112px;
@@ -264,10 +271,8 @@ h3 {
   cursor: pointer;
 }
 
-.decrement,
-.plus .horizontal {
+.decrement {
   height: 0;
-  max-height: 0;
   width: 14px;
   border: 1px solid #252c3e;
   background-color: #252c3e;
@@ -310,10 +315,6 @@ h3 {
   border: 1px solid #252c3e;
   background-color: #252c3e;
   border-radius: 1px;
-}
-
-.plus .horizontal {
-  position: absolute;
 }
 
 .student-calculator-label {
@@ -466,4 +467,146 @@ h3 {
   color: #252527;
   margin-top: 0;
   margin-bottom: 10px;
+}
+
+@media only screen and (max-width: 768px) {
+  .buy-card-carousel {
+    gap: 0;
+  }
+
+  .buy-card-left-control,
+  .buy-card-right-control {
+    display: none !important;
+  }
+
+  .calculator-container {
+    flex: 0 0 90vw;
+    max-width: 360px;
+    margin: 0 auto;
+  }
+
+  .buy-card-scroll-wrapper {
+    scroll-padding-left: 16px;
+    scroll-padding-right: 16px;
+   margin: 0 8px 0;
+  }
+
+  .buy-card-track {
+    gap: 16px;
+  }
+
+  .pagination {
+    margin-top: 10px;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .bullet {
+    width: 8px;
+    height: 8px;
+    background: #252c3e;
+    opacity: 0.3;
+  }
+
+  .bullet-active {
+    background: #da4b07;
+    opacity: 1;
+    transform: scale(1.1);
+  }
+
+  .tips {
+    grid-template-columns: repeat(1, 1fr);
+    width: 375px;
+  }
+
+  .first-tip-block,
+  .second-tip-block {
+    -webkit-box-pack: start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+    margin-left: 12px;
+  }
+
+  .tips ul {
+    width: 100%;
+  }
+
+  .tips ul li {
+    margin-top: 0;
+    margin-bottom: 14px;
+  }
+
+  .third-tip-block {
+    padding-left: 22px;
+    padding-right: 13px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .second-tip-block,
+  .third-tip-block {
+    margin-top: 0;
+  }
+
+  .third-tip-block p {
+    font-weight: 600;
+    margin-bottom: 0;
+  }
+
+  .third-tip-block p:nth-child(2) {
+    margin-left: auto;
+  }
+
+  .third-tip-block p:last-child {
+    margin-top: 14px;
+    -webkit-box-flex: 0;
+    -ms-flex: 0 1 100%;
+    flex: 0 1 100%;
+  }
+
+  .adult-card-calculator,
+  .child-card-calculator {
+    width: 355px;
+  }
+
+  .card-body {
+    padding: 0;
+  }
+
+  .adult-calculator-label,
+  .student-calculator-label {
+    margin-left: 25px;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 130%;
+    width: 80px;
+  }
+
+  .calculator {
+    width: 134px;
+    margin-right: 28px;
+  }
+
+  .price-label,
+  .adult-price,
+  .student-price {
+    font-size: 14px;
+  }
+
+  .total-price-label,
+  .price {
+    font-size: 16px;
+  }
+
+  .price-label {
+    left: 125px;
+  }
+}
+
+@media only screen and (min-width: 769px) {
+  .buy-card-scroll-wrapper {
+    overflow-x: hidden !important;
+    scroll-snap-type: none;
+  }
 }

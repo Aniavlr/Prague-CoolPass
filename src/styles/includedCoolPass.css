@@ -52,27 +52,25 @@ h3 {
 
 .content-active {
   position: absolute;
-  display: grid;
-  justify-items: center;
-  height: 100%;
-  width: 100%;
+  inset: 0; 
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end; 
+  align-items: center;
 }
 
 .exclusive-offer-btn {
   width: 476px;
+  max-width: 90%;
   height: 71px;
-  text-align: center;
-  padding: 0 15px;
-  margin-top: 208px;
-}
-
-.exclusive-offer-btn {
-  display: grid;
-  align-content: center;
-  justify-items: center;
+  margin-top: 0;
+  margin: 0 auto 20px auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background: rgba(218, 75, 7, 0.7);
   border-radius: 10px;
-  margin-top: 208px;
+  text-align: center;
 }
 
 .offer-text,
@@ -136,7 +134,7 @@ h3 {
   height: auto;
   display: flex;
   justify-content: center;
-  align-items: flex-end;
+  align-items: center;
   flex-shrink: 0;
   padding-bottom: 40px;
 }
@@ -146,6 +144,9 @@ h3 {
   width: auto;
   height: 40px;
   text-decoration: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .see-all-wrapper .button-send {
@@ -177,20 +178,21 @@ h3 {
   border: 1px solid #ef5106;
 }
 
-/* ============================================= */
-/*        ЕЩЁ МЕНЬШЕ КАРТОЧКИ НА МОБИЛЬНЫХ      */
-/* ============================================= */
-
-/* Очень маленькие экраны + большинство телефонов (≤ 767px) */
-@media (max-width: 767px) {
+@media (max-width: 768px) {
+  .included-title {
+    margin: 50px 2px 30px;
+    text-align: left;
+    width: 375px;
+  }
   .content-coolPass {
     grid-template-columns: 1fr;
     gap: 14px;
   }
 
   .card {
-    aspect-ratio: 4 / 2.4; /* делаем заметно компактнее */
+    aspect-ratio: 4 / 2.4; 
     max-width: 100%;
+    width: 390px;
     border-radius: 0px;
   }
 
@@ -198,15 +200,33 @@ h3 {
     border-radius: 0;
   }
 
-  .exclusive-offer-btn {
-    /* Кнопка тоже чуть меньше */
-    transform: scale(0.92);
+  .text-container {
+    padding: 0 22px;
+    margin: 0;
+    width: 390px;
   }
 
-  .exclusive-offer-btn .offer-text {
-    font-size: 14px; /* уменьшаем текст кнопки */
-    padding: 0 10px;
-    line-height: 1.25;
+  .title {
+    font-size: 18px;
+    text-wrap: wrap;
+  }
+
+  .popup-text {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 20px;
+    margin-top: 17px;
+  }
+
+  .exclusive-offer-btn {
+    width: 290px;
+    height: 59px;
+    width: 100%;
+    margin: 0; 
+  }
+
+  .see-all-wrapper {
+    justify-content: center;
   }
 
   /* На тач-устройствах показываем оверлей при нажатии */
@@ -215,7 +235,6 @@ h3 {
   }
 }
 
-/* Планшеты вертикальные и горизонтальные (768–1024px) */
 @media (min-width: 768px) and (max-width: 1024px) {
   .content-coolPass {
     grid-template-columns: repeat(2, 1fr);
@@ -223,32 +242,29 @@ h3 {
   }
 
   .card {
-    aspect-ratio: 5 / 3.1; /* чуть компактнее, чем на десктопе */
+    aspect-ratio: 5 / 3.1;
     max-width: 100%;
   }
 
   .exclusive-offer-btn {
-    transform: scale(0.95); /* лёгкое уменьшение кнопки */
-  }
-
-  .exclusive-offer-btn .offer-text {
-    font-size: 15.5px;
+    margin-top: auto;
+    margin-bottom: 28px;
+    width: 290px;
+    height: 59px;
   }
 }
 
-/* Очень маленькие телефоны (≤ 480px) — максимальное уменьшение */
 @media (max-width: 480px) {
   .card {
-    aspect-ratio: 4 / 2.35; /* максимально компактно, но всё ещё красиво */
-    border-radius: 8px;
+    aspect-ratio: 4 / 2.35;
+    padding: 0;
+    width: 390px;
   }
 
   .exclusive-offer-btn {
-    transform: scale(0.88);
-  }
-
-  .exclusive-offer-btn .offer-text {
-    font-size: 13.5px;
-    padding: 0 8px;
+    width: 290px;
+    max-width: 88%;
+    height: 56px;
+    margin: 0 auto 24px auto;
   }
 }

@@ -21,16 +21,31 @@ export default function MainPage() {
 
   const [searchQuery, setSearchQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
+  // eslint-disable-next-line
   const [hasResults, setHasResults] = useState(false);
   const [showEmptySearchError, setShowEmptySearchError] = useState(false);
   const [showNoResults, setShowNoResults] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   const searchRef = useRef(null);
   const resultsRef = useRef(null);
   const buttonRef = useRef(null);
   const errorTimeoutRef = useRef(null);
 
+  // eslint-disable-next-line
   const attractions = translations?.attractionsList || [];
+
+  // Проверка мобильного устройства
+  useEffect(() => {
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    checkIfMobile();
+    window.addEventListener('resize', checkIfMobile);
+
+    return () => window.removeEventListener('resize', checkIfMobile);
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -121,7 +136,7 @@ export default function MainPage() {
 
     // Проверяем, есть ли результаты для текущего запроса
     const query = searchQuery.toLowerCase().trim();
-    const hasResultsForQuery = attractions.some((item) => 
+    const hasResultsForQuery = attractions.some((item) =>
       item.title.toLowerCase().includes(query)
     );
 
@@ -129,19 +144,19 @@ export default function MainPage() {
       setShowNoResults(true);
       setSuggestions([]);
       setHasResults(false);
-      
+
       setTimeout(() => {
         setSearchQuery("");
       }, 300);
-      
+
       if (errorTimeoutRef.current) {
         clearTimeout(errorTimeoutRef.current);
       }
-      
+
       errorTimeoutRef.current = setTimeout(() => {
         setShowNoResults(false);
       }, 3000);
-      
+
       return;
     }
 
@@ -207,7 +222,6 @@ export default function MainPage() {
     return null;
   };
 
-  // Определяем, нужно ли показывать выпадающий список
   const shouldShowDropdown =
     showEmptySearchError || showNoResults || suggestions.length > 0;
 
@@ -236,58 +250,61 @@ export default function MainPage() {
               развлечений в Праге`}
             </h3>
           </div>
-          <div className="form-container">
-            <div className="search-container" ref={searchRef}>
-              <div
-                className={`autocomplete__box ${
-                  shouldShowDropdown ? "autocomplete__searching" : ""
-                }`}
-              >
-                <div className="autocomplete__inputs">
-                  <input
-                    placeholder={t("SEARCH") || "Поиск объектов"}
-                    type="text"
-                    autoComplete="off"
-                    className="attractions-search"
-                    value={searchQuery}
-                    onChange={handleSearchInput}
-                    onKeyDown={handleKeyDown}
-                    onFocus={handleInputFocus}
-                  />
-                  <input type="hidden" />
-                </div>
+          
+          {/* Поисковая форма на десктопе здесь */}
+          {!isMobile && (
+            <div className="form-container">
+              <div className="search-container" ref={searchRef}>
+                <div
+                  className={`autocomplete__box ${
+                    shouldShowDropdown ? "autocomplete__searching" : ""
+                  }`}
+                >
+                  <div className="autocomplete__inputs">
+                    <input
+                      placeholder={t("SEARCH") || "Поиск объектов"}
+                      type="text"
+                      autoComplete="off"
+                      className="attractions-search"
+                      value={searchQuery}
+                      onChange={handleSearchInput}
+                      onKeyDown={handleKeyDown}
+                      onFocus={handleInputFocus}
+                    />
+                    <input type="hidden" />
+                  </div>
 
-                {/* Выпадающий список с подсказками или сообщениями об ошибках */}
-                {shouldShowDropdown && renderDropdownContent()}
+                  {shouldShowDropdown && renderDropdownContent()}
+                </div>
+                <div
+                  className="magnifying-glass"
+                  onClick={handleSearchSubmit}
+                  style={{ cursor: "pointer" }}
+                >
+                  <img
+                    src="img/search.a842451d.svg"
+                    alt="search"
+                    style={{
+                      width: "20px",
+                      height: "20px",
+                      position: "absolute",
+                      right: "9px",
+                      top: "50%",
+                      transform: "translateY(-50%)",
+                    }}
+                  />
+                </div>
               </div>
-              <div
-                className="magnifying-glass"
+              <button
+                ref={buttonRef}
+                className="action-button show-attractions-btn"
                 onClick={handleSearchSubmit}
-                style={{ cursor: "pointer" }}
+                type="button"
               >
-                <img
-                  src="img/search.a842451d.svg"
-                  alt="search"
-                  style={{
-                    width: "20px",
-                    height: "20px",
-                    position: "absolute",
-                    right: "9px",
-                    top: "50%",
-                    transform: "translateY(-50%)",
-                  }}
-                />
-              </div>
+                {t("HOME_lets_go_button") || "Поехали"}
+              </button>
             </div>
-            <button
-              ref={buttonRef}
-              className="action-button show-attractions-btn"
-              onClick={handleSearchSubmit}
-              type="button"
-            >
-              {t("HOME_lets_go_button") || "Поехали"}
-            </button>
-          </div>
+          )}
         </div>
       </div>
 
@@ -299,6 +316,53 @@ export default function MainPage() {
           цена`}
         </p>
       </div>
+
+      {/* Поисковая форма на мобильных после underbar */}
+      {isMobile && (
+        <div className="mobile-form-container">
+          <div className="search-container mobile-search-container" ref={searchRef}>
+            <div
+              className={`autocomplete__box ${
+                shouldShowDropdown ? "autocomplete__searching" : ""
+              }`}
+            >
+              <div className="autocomplete__inputs">
+                <input
+                  placeholder={t("SEARCH") || "Поиск объектов"}
+                  type="text"
+                  autoComplete="off"
+                  className="attractions-search mobile-attractions-search"
+                  value={searchQuery}
+                  onChange={handleSearchInput}
+                  onKeyDown={handleKeyDown}
+                  onFocus={handleInputFocus}
+                />
+                <input type="hidden" />
+              </div>
+
+              {shouldShowDropdown && renderDropdownContent()}
+            </div>
+            <div
+              className="magnifying-glass mobile-magnifying-glass"
+              onClick={handleSearchSubmit}
+              style={{ cursor: "pointer" }}
+            >
+              <img
+                src="img/search.a842451d.svg"
+                alt="search"
+              />
+            </div>
+          </div>
+          <button
+            ref={buttonRef}
+            className="action-button mobile-show-attractions-btn"
+            onClick={handleSearchSubmit}
+            type="button"
+          >
+            {t("HOME_lets_go_button") || "Поехали"}
+          </button>
+        </div>
+      )}
 
       <section>
         <BestAttractions />

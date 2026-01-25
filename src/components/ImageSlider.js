@@ -17,7 +17,6 @@ const ImageSlider = () => {
   // Клоны для бесконечной прокрутки
   const slides = [images[length - 1], ...images, images[0]];
 
-  // Автоматический переход (всегда вперёд)
   useEffect(() => {
     if (isHovered) return;
 
@@ -34,7 +33,7 @@ const ImageSlider = () => {
       const timer = setTimeout(() => {
         setTransitionEnabled(false);
         setCurrent(current === length ? 0 : length - 1);
-      }, 600); // равна длительности transition (0.6s)
+      }, 600);
 
       return () => clearTimeout(timer);
     }

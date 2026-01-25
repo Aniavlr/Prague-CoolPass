@@ -3,11 +3,22 @@ import ButtonTranslate from "./ButtonTranslate";
 import { useTranslation } from "../TranslationContext";
 import { useEffect, useState } from "react";
 
+const menuIds = [
+  "5a7a893966105c2e28d87bd1",
+  "5a7a894466105c2e28d87bd2",
+  "5a7a894f66105c2e28d87bd3",
+  "5a7a896166105c2e28d87bd4",
+  "5a7a897266105c2e28d87bd5",
+  "5a7a898166105c2e28d87bd6",
+];
+
 export default function Navigation() {
-  const {t, setTranslations} = useTranslation();
+  const { t, setTranslations } = useTranslation();
 
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const delta = 20;
@@ -31,55 +42,82 @@ export default function Navigation() {
     };
 
     window.addEventListener("scroll", controlNavbar, { passive: true });
-
     controlNavbar();
 
-    return () => {
-      window.removeEventListener("scroll", controlNavbar);
-    };
+    return () => window.removeEventListener("scroll", controlNavbar);
   }, [lastScrollY]);
-  
-  return (
-    <div className={`nav-wrapper ${!isVisible ? "hidden" : ""}`}>
-      <nav className="navbar">
-        <div className="navbar-container">
-          <div className="left-nav">
-            <a href="/" className="navbar-brand">
-              CoolPass
-            </a>
-          </div>
 
-          <div className="center-nav">
-            <ul className="menu">
-              {menuIds.map((id) => (
-                <li key={id}>
-                  <a href="*">{t(id) || "Loading..."}</a>
-                </li>
-              ))}
-            </ul>
-          </div>
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen((prev) => !prev);
+  };
 
-          <div className="right-nav">
-            <ul className="menu">
-              <li>
-                <ButtonPay />
-              </li>
-              <li>
+ return (
+    <>
+      <div className={`nav-wrapper ${!isVisible ? "hidden" : ""}`}>
+        <nav className="navbar">
+          <div className="navbar-container">
+            <button
+                className="hamburger mobile-only"
+                onClick={toggleMobileMenu}
+                aria-label="Toggle menu"
+              >
+                {isMobileMenuOpen ? (
+                  <img src="/img/close.svg" alt="Close menu" />
+                ) : (
+                  <img src="/img/menu.svg" alt="Open menu" />
+                )}
+              </button>
+
+            <div className="left-nav">
+              <a href="/" className="navbar-brand">
+                CoolPass
+              </a>
+            </div>
+
+            {/* Десктопное меню */}
+            <div className="center-nav desktop-menu">
+              <ul className="menu">
+                {menuIds.map((id) => (
+                  <li key={id}>
+                    <a href="*">{t(id) || "Loading..."}</a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Правая часть */}
+            <div className="right-nav">
+              <ButtonPay />
+
+              <div className="desktop-only">
                 <ButtonTranslate onTranslationsChange={setTranslations} />
-              </li>
-            </ul>
+              </div>
+            </div>
+
           </div>
+        </nav>
+      </div>
+
+      {/* Мобильное меню */}
+      <div className={`mobile-menu-overlay ${isMobileMenuOpen ? "open" : ""}`}>
+        <div className="mobile-menu-content">
+
+          <ul className="mobile-menu-list">
+            {menuIds.map((id) => (
+              <li key={id}>
+                <a href="*" onClick={toggleMobileMenu}>
+                  {t(id) || "Loading..."}
+                </a>
+              </li>
+            ))}
+          </ul>
+
+          <div className="mobile-translate">
+            <ButtonTranslate onTranslationsChange={setTranslations} />
+          </div>
+
         </div>
-      </nav>
-    </div>
+      </div>
+    </>
   );
 }
-
-const menuIds = [
-  "5a7a893966105c2e28d87bd1",
-  "5a7a894466105c2e28d87bd2",
-  "5a7a894f66105c2e28d87bd3",
-  "5a7a896166105c2e28d87bd4",
-  "5a7a897266105c2e28d87bd5",
-  "5a7a898166105c2e28d87bd6",
-];

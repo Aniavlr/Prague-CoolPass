@@ -38,7 +38,7 @@ h3 {
 
 .phone-content {
   display: flex;
-  margin-left: 100px;
+  margin-left: 67px;
   flex-direction: row;
 }
 
@@ -138,34 +138,36 @@ h3 {
   margin-bottom: 0;
 }
 
-/* Базовые стили остаются как были, добавляем только медиа-запросы */
-
-@media (max-width: 991px) {
+@media (max-width: 768px) {
   .benefits-coolpass-container {
-    padding: 0 15px;
+    flex-direction: column;
   }
 
   .benefits-content-container {
     flex-direction: column;
-    align-items: center;
+    width: 100%;
+    gap: 0;
   }
 
   .phone-content {
-    margin-left: 0;
-    margin-bottom: 40px;
+    order: 1;
+    width: 100%;
+    margin: 0 0 11px;
   }
 
-  /* Центрируем телефон */
-  .mobile-phone {
-    margin: 40px auto 0;
+  .content {
+    order: 2;
+    width: 100%;
   }
 
   .prague-card-image {
-    margin-top: 188px;
-    margin-left: auto;
-    margin-right: auto;
-    left: 50%;
-    transform: translateX(-50%);
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin-top: 106px;
+    margin-left: 119.44px;
+    width: 172px;
+    height: 115px;
+    position: absolute;
   }
 
   .title-box {
@@ -180,22 +182,20 @@ h3 {
   .spoiler-text {
     width: 100%;
   }
-}
 
-@media (max-width: 767px) {
   .benefits-title {
-    text-align: center;
-    margin: 30px 0 20px;
-  }
-
-  h3 {
-    font-size: 20px;
+    text-align: left;
+    margin: 30px 8px 0px;
   }
 
   .mobile-phone {
-    width: 220px;
-    height: 440px; /* сохраняем пропорции ≈ 1 : 2 */
-    margin-top: 30px;
+    margin-left: 40px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 246px;
+    width: 118.5px;
+    z-index: 2;
+    margin-top: 0;
   }
 
   .prague-card-image {
@@ -227,14 +227,23 @@ h3 {
 
 @media (max-width: 480px) {
   .mobile-phone {
-    width: 180px;
-    height: 360px;
+    margin-left: 40px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 246px;
+    width: 118.5px;
+    z-index: 2;
+    margin-top: 0;
   }
 
   .prague-card-image {
-    width: 230px;
-    height: 154px;
-    margin-top: 172px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin-top: 106px;
+    margin-left: 119.44px;
+    width: 172px;
+    height: 115px;
+    position: absolute;
   }
 
   .title-box {

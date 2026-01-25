@@ -15,7 +15,7 @@
 .howToUse-steps {
   display: grid;
   justify-items: center;
-  gap: 10px;
+  gap: 20px;
   grid-template-columns: repeat(4, 1fr);
   margin-top: 30px;
 }
@@ -80,240 +80,100 @@ h3 {
   color: #252c3e;
 }
 
-/* Планшеты (768px - 1024px) */
-@media screen and (max-width: 1024px) {
-  .container,
-  .howToUse-container {
-    max-width: 90%;
-    padding: 0 20px;
-  }
-
-  .howToUse-title {
-    margin-top: 40px;
-    text-align: center; /* Центрируем заголовок */
-  }
-
-  .howToUse-steps {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 30px;
-    margin-top: 25px;
-    justify-content: center; /* Центрируем сетку */
-  }
-
-  .step-img {
-    width: 240px;
-    height: 220px;
-    margin: 0 auto; /* Центрируем изображение */
-  }
-
-  .ordering {
-    font-size: 20px;
-    line-height: 26px;
-    margin-top: 12px;
-  }
-
-  .step-hint {
-    font-size: 13px;
-    line-height: 20px;
-    margin-top: 6px;
-    padding: 0 10px;
-  }
-
-  .step-img .link {
-    width: 160px;
-    height: 45px;
-    margin: 12px auto; /* Центрируем ссылки */
-  }
-
-  .content-use {
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Центрируем весь контент шага */
-    text-align: center; /* Центрируем текст */
-  }
+.carousel-dots {
+  display: none;
 }
 
-/* Мобильные устройства (480px - 767px) */
-@media screen and (max-width: 767px) {
-  .container,
+@media (max-width: 768px) {
   .howToUse-container {
-    max-width: 100%;
-    padding: 0 16px;
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Центрируем контейнер */
-  }
-
-  .howToUse-title {
-    margin-top: 30px;
-    text-align: center;
-    width: 100%;
-  }
-
-  h3 {
-    font-size: 18px;
-    line-height: 120%;
-    text-align: center; /* Центрируем заголовок h3 */
-  }
-
-  .howToUse-steps {
-    grid-template-columns: 1fr; /* Одна колонка для центрирования */
-    gap: 40px;
-    margin-top: 20px;
-    width: 100%;
-    justify-items: center; /* Центрируем элементы сетки */
-  }
-
-  .step-img {
-    width: 280px;
-    height: 260px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .ordering {
-    font-size: 18px;
-    line-height: 24px;
-    margin-top: 10px;
-    text-align: center;
-    width: 100%;
-  }
-
-  .step-hint {
-    font-size: 12px;
-    line-height: 18px;
-    margin-top: 5px;
-    padding: 0;
-    max-width: 280px;
-    text-align: center;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .content-use {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-
-  .step-img .link {
-    width: 150px;
-    height: 40px;
-    margin: 10px auto; /* Центрируем ссылки */
-  }
-}
-
-/* Маленькие мобильные устройства (до 479px) */
-@media screen and (max-width: 479px) {
-  .container,
-  .howToUse-container {
-    padding: 0 12px;
-    align-items: center;
-  }
-
-  .howToUse-title {
-    margin-top: 25px;
-    text-align: center;
-  }
-
-  h3 {
-    font-size: 16px;
-    text-align: center;
-  }
-
-  .howToUse-steps {
-    gap: 30px;
     margin-top: 15px;
+  }
+
+  .step-img {
+    height: 250px;
     width: 100%;
-    justify-items: center;
-  }
-
-  .step-img {
-    width: 240px;
-    height: 220px;
-    margin: 0 auto;
-  }
-
-  .ordering {
-    font-size: 16px;
-    line-height: 22px;
-    margin-top: 8px;
-    text-align: center;
+    margin: 0;
   }
 
   .step-hint {
-    font-size: 11px;
-    line-height: 16px;
-    margin-top: 4px;
-    padding: 0;
-    max-width: 240px;
-    text-align: center;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .step-img .link {
-    width: 140px;
-    height: 38px;
-    margin: 8px auto;
-  }
-
-  .content-use {
-    align-items: center;
-    text-align: center;
-  }
-}
-
-/* Для очень маленьких экранов (до 320px) */
-@media screen and (max-width: 320px) {
-  .container,
-  .howToUse-container {
-    padding: 0 10px;
-  }
-
-  .step-img {
-    width: 200px;
-    height: 180px;
-    margin: 0 auto;
-  }
-
-  .ordering {
-    font-size: 15px;
-    line-height: 20px;
-    text-align: center;
-  }
-
-  .step-hint {
-    font-size: 10px;
-    line-height: 15px;
-    max-width: 200px;
-    padding: 0;
-    text-align: center;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .step-img .link {
-    width: 120px;
-    height: 35px;
-    margin: 5px auto;
+    width: 288px;
   }
 
   .howToUse-steps {
-    justify-items: center;
+    display: none;
+  }
+
+  .steps-carousel {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    gap: 16px;
+    padding: 0;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .steps-carousel::-webkit-scrollbar {
+    display: none;
+  }
+
+  .step-item {
+    flex: 0 0 100%;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    width: 100%;
+    max-width: 360px;
+    margin: 0 auto;
+  }
+
+  .carousel-dots {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 20px;
+    padding: 0 16px;
+  }
+
+  .dot {
+    background: #d1d5db;
+    width: 2px;
+    height: 2px;
+    border-radius: 50%;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .dot.active {
+    background: #da4b07;
+    transform: scale(1.1);
+  }
+
+  .dot:hover {
+    background: #ef5106;
+  }
+
+  .howToUse-steps {
+    display: none !important;
+  }
+
+  .steps-carousel {
+    display: flex !important;
   }
 }
 
-/* Для тач-устройств (улучшение взаимодействия) */
-@media (hover: none) and (pointer: coarse) {
-  .step-img .link {
-    min-height: 44px; /* Увеличение области для тапа */
-    display: flex;
-    align-items: center;
-    justify-content: center;
+@media (min-width: 769px) {
+  .steps-carousel,
+  .carousel-dots {
+    display: none;
+  }
+
+  .howToUse-steps {
+    display: grid;
   }
 }
