@@ -44,7 +44,7 @@ h3 {
   overflow-x: auto;
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
-  scroll-snap-type: x mandatory; 
+  scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -470,6 +470,12 @@ h3 {
 }
 
 @media only screen and (max-width: 768px) {
+  .calculator-section-title {
+    margin: 50px 0 30px;
+    font-size: 18px;
+    line-height: 23px;
+    margin-left: 8px;
+  }
   .buy-card-carousel {
     gap: 0;
   }
@@ -488,7 +494,7 @@ h3 {
   .buy-card-scroll-wrapper {
     scroll-padding-left: 16px;
     scroll-padding-right: 16px;
-   margin: 0 8px 0;
+    margin: 0 8px 0;
   }
 
   .buy-card-track {
