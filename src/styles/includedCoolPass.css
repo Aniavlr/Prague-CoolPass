@@ -192,7 +192,6 @@ h3 {
   }
 
   .card {
-    
     border-radius: 0px;
   }
 
@@ -229,6 +228,12 @@ h3 {
     justify-content: center;
   }
 
+  .offer-text {
+    font-size: 15px;
+    margin: 0;
+    padding: 0 5px;
+  }
+
   /* На тач-устройствах показываем оверлей при нажатии */
   .card:active .exclusive-offer-btn {
     opacity: 1;
@@ -242,7 +247,6 @@ h3 {
   }
 
   .card {
-
     max-width: 100%;
   }
 
@@ -256,7 +260,6 @@ h3 {
 
 @media (max-width: 480px) {
   .card {
-    
     padding: 0;
     width: 100%;
   }
