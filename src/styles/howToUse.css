@@ -93,6 +93,8 @@ h3 {
   }
   .howToUse-container {
     margin-top: 15px;
+    padding: 0 8px;
+    width: 100%;
   }
 
   .step-img {
@@ -117,7 +119,7 @@ h3 {
     scroll-behavior: smooth;
     scrollbar-width: none;
     -ms-overflow-style: none;
-    gap: 16px;
+    gap: 10px;
     padding: 0;
     width: 100%;
     box-sizing: border-box;
@@ -132,8 +134,7 @@ h3 {
     scroll-snap-align: start;
     scroll-snap-stop: always;
     width: 100%;
-    max-width: 360px;
-    margin: 0 auto;
+    margin: 0 8px 0 0;
   }
 
   .carousel-dots {
@@ -168,9 +169,6 @@ h3 {
     display: none !important;
   }
 
-  .steps-carousel {
-    display: flex !important;
-  }
 }
 
 @media (min-width: 769px) {
