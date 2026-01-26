@@ -8,10 +8,29 @@ export default function BestAttractions() {
   const [likedCards, setLikedCards] = useState(new Set());
   const [hoveredCard, setHoveredCard] = useState(null);
   const [currentPage, setCurrentPage] = useState(0);
+  const [expandedCards, setExpandedCards] = useState(new Set()); 
+  const [isMobile, setIsMobile] = useState(false);
 
   const {t} = useTranslation();
 
-  const handleLikeClick = (index) => {
+  // Проверяем, мобильное ли устройство
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkMobile(); 
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  const handleLikeClick = (index, e) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    
     setLikedCards((prev) => {
       const newSet = new Set(prev);
       if (newSet.has(index)) {
@@ -21,6 +40,18 @@ export default function BestAttractions() {
       }
       return newSet;
     });
+    
+    if (isMobile) {
+      setExpandedCards((prev) => {
+        const newSet = new Set(prev);
+        if (newSet.has(index)) {
+          newSet.delete(index);
+        } else {
+          newSet.add(index);
+        }
+        return newSet;
+      });
+    }
   };
 
   const handleMouseEnter = (index) => {
@@ -30,6 +61,20 @@ export default function BestAttractions() {
   const handleMouseLeave = () => {
     setHoveredCard(null);
   };
+
+
+  useEffect(() => {
+    if (!isMobile) return;
+    
+    const handleClickOutside = (e) => {
+      if (!e.target.closest('.card-container') && !e.target.closest('.like-btn-disabled') && !e.target.closest('.like-btn-active')) {
+        setExpandedCards(new Set()); 
+      }
+    };
+    
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [isMobile]);
 
   const attractions = [
     {
@@ -153,8 +198,18 @@ export default function BestAttractions() {
                 <div
                   key={index}
                   className="card-wrapper"
-                  onMouseEnter={() => handleMouseEnter(index)}
-                  onMouseLeave={handleMouseLeave}
+                  onMouseEnter={() => !isMobile && handleMouseEnter(index)} 
+                  onMouseLeave={() => !isMobile && handleMouseLeave()} 
+                  onClick={(e) => {
+                 
+                    if (isMobile && !e.target.closest('.like-btn-disabled') && !e.target.closest('.like-btn-active')) {
+                      setExpandedCards((prev) => {
+                        const newSet = new Set(prev);
+                        newSet.delete(index);
+                        return newSet;
+                      });
+                    }
+                  }}
                 >
                   <div
                     className="card-container"
@@ -170,7 +225,10 @@ export default function BestAttractions() {
                       </div>
                       <div
                         className={`card-footer ${
-                          hoveredCard === index ? "expanded" : ""
+                       
+                          isMobile 
+                            ? expandedCards.has(index) ? "expanded" : ""
+                            : hoveredCard === index ? "expanded" : ""
                         }`}
                       >
                         <div className="card-footer-content">
@@ -178,7 +236,12 @@ export default function BestAttractions() {
                             {t(`ATTR_${attr.id}_title`) ||
                               "Название не найдено"}
                           </p>
-                          {hoveredCard === index && (
+
+                          {(
+                            isMobile 
+                              ? expandedCards.has(index)
+                              : hoveredCard === index
+                          ) && (
                             <p className="attraction-subtitle">
                               {t(`ATTR_${attr.id}_subtitle`) || ""}
                             </p>
@@ -190,11 +253,7 @@ export default function BestAttractions() {
                               ? "like-btn-active"
                               : "like-btn-disabled"
                           }
-                          onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            handleLikeClick(index);
-                          }}
+                          onClick={(e) => handleLikeClick(index, e)}
                           role="button"
                           tabIndex={0}
                           aria-label={
@@ -202,6 +261,12 @@ export default function BestAttractions() {
                               ? "Убрать из избранного"
                               : "Добавить в избранное"
                           }
+
+                          style={isMobile ? {
+                            width: '32px',
+                            height: '32px',
+                            backgroundSize: '24px 24px'
+                          } : {}}
                         />
                       </div>
                     </a>

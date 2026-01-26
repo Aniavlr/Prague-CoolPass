@@ -239,7 +239,8 @@
 }
 
 @media only screen and (max-width: 768px) {
-   h3, .top-attractions-title{
+  h3,
+  .top-attractions-title {
     font-size: 18px;
     line-height: 23px;
     margin-left: 10px;
@@ -287,12 +288,57 @@
     pointer-events: auto;
   }
 
+  .like-btn-active {
+    background: url("../../public/img/heart-active.72445abc.svg") center no-repeat !important;
+    background-size: 24px 24px !important;
+    opacity: 1 !important;
+  }
+
+  /* Стили для неактивного сердечка (прозрачное) */
+  .like-btn-disabled {
+    background: url("../../public/img/heart-disable.e975f7bf.svg") center no-repeat !important;
+    background-size: 24px 24px !important;
+    opacity: 0.7 !important;
+  }
+
+  /* Убираем hover-эффекты на мобильных */
+  .like-btn-disabled:hover,
+  .like-btn-active:hover {
+    opacity: inherit !important;
+    transform: none !important;
+  }
+
+  /* Эффект нажатия на мобильных */
+  .like-btn-disabled:active,
+  .like-btn-active:active {
+    transform: scale(0.9) !important;
+    transition: transform 0.1s !important;
+  }
+
+  /* Обновляем стили футера для мобильных */
+  .card-footer {
+    padding: 15px !important;
+    height: 65px !important;
+    align-items: flex-start !important;
+    transition: height 0.3s ease !important;
+  }
+
+  .card-footer.expanded {
+    height: 135px !important;
+  }
+
+  /* Делаем заголовок немного короче для места под сердечко */
+  .attraction-title {
+    max-width: 85% !important;
+  }
+
   @supports (-webkit-touch-callout: none) {
     .carousel-scroll-wrapper {
       -webkit-overflow-scrolling: auto;
     }
   }
 }
+
 
 @media only screen and (min-width: 769px) {
   .carousel-scroll-wrapper {
