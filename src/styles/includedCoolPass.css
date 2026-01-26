@@ -35,7 +35,6 @@ h3 {
 }
 
 .card {
-  width: 100%;
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
@@ -52,27 +51,32 @@ h3 {
 
 .content-active {
   position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: center;
+  display: grid;
+  justify-items: center;
+  height: 0;
+  width: 100%;
+}
+
+.content-active {
+  height: 100%;
 }
 
 .exclusive-offer-btn {
   width: 476px;
-  max-width: 90%;
   height: 71px;
-  margin-top: 0;
-  margin: 0 auto 20px auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: rgba(218, 75, 7, 0.7);
-  border-radius: 10px;
   text-align: center;
+  padding: 0 15px;
+  margin-top: 208px;
 }
 
+.exclusive-offer-btn {
+  display: grid;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  justify-items: center;
+  background: rgba(218, 75, 7, 0.7);
+  border-radius: 10px;
+}
 .offer-text,
 .title {
   font-family: "Open Sans", sans-serif;
@@ -191,9 +195,6 @@ h3 {
   }
 
   .card {
-    aspect-ratio: 4 / 2.4;
-    max-width: 100%;
-    width: 390px;
     border-radius: 0px;
   }
 
@@ -220,10 +221,10 @@ h3 {
   }
 
   .exclusive-offer-btn {
-    width: 290px;
+    margin-top: auto;
+    margin-bottom: 28px;
+    width: 260px;
     height: 59px;
-    width: 100%;
-    margin: 0;
   }
 
   .see-all-wrapper {
@@ -243,29 +244,30 @@ h3 {
   }
 
   .card {
-    aspect-ratio: 5 / 3.1;
-    max-width: 100%;
+    border-radius: 0;
   }
 
   .exclusive-offer-btn {
     margin-top: auto;
     margin-bottom: 28px;
-    width: 290px;
+    width: 260px;
     height: 59px;
   }
 }
 
 @media (max-width: 480px) {
   .card {
-    aspect-ratio: 4 / 2.35;
-    padding: 0;
-    width: 390px;
+    border-radius: 0;
   }
 
   .exclusive-offer-btn {
-    width: 290px;
-    max-width: 88%;
-    height: 56px;
-    margin: 0 auto 24px auto;
+    margin-top: auto;
+    margin-bottom: 28px;
+    width: 260px;
+    height: 59px;
+  }
+
+  .offer-text {
+    margin: 0;
   }
 }
