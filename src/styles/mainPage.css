@@ -559,7 +559,7 @@ h3 {
   .mobile-form-container {
     padding: 30px 20px;
   }
-  h3{
+  h3 {
     font-size: 18px;
     line-height: 23px;
     margin-left: 10px;
@@ -693,5 +693,20 @@ body {
   .center-nav .menu a {
     font-size: 13px;
   }
-}
 
+  input,
+  textarea,
+  select {
+    font-size: 16px !important; /* критично для iOS */
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    touch-action: manipulation; /* отключает двойной тап зум */
+  }
+
+  .mobile-attractions-search:focus,
+  .attractions-search:focus {
+    font-size: 16px !important;
+  }
+}

@@ -3,7 +3,7 @@ import { useTranslation } from "../TranslationContext";
 import "../styles/news.css";
 
 export default function News() {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <>
@@ -21,13 +21,13 @@ export default function News() {
                 className="news-image"
                 style={{ backgroundImage: "url('img/news1.jpg')" }}
               >
-                <div data-v-28b4c0a4="" class="news-date">
+                <div data-v-28b4c0a4="" className="news-date">
                   10.12.2025
                 </div>
               </div>
               <div className="news-text">
                 <a href="*" className="link">
-                  <h4 class="news-title">
+                  <h4 className="news-title">
                     CELEBRATE CHRISTMAS WITH SAVINGS: ENJOY COOLPASS HOLIDAY
                     DISCOUNTS UNTIL JANUARY 4 ✨
                   </h4>
@@ -46,7 +46,7 @@ export default function News() {
                   a cruise boat, have some fun at the Illusion Art M...
                 </p>
                 <a href="*" className="link">
-                  <p data-v-28b4c0a4="" class="read-more">
+                  <p data-v-28b4c0a4="" className="read-more">
                     {t("READ_MORE") || "читать далее"}
                   </p>
                 </a>
@@ -56,7 +56,7 @@ export default function News() {
             <div className="news-card-container">
               <div className="news-text">
                 <a href="*" className="link">
-                  <h4 class="news-title">
+                  <h4 className="news-title">
                     MEET COOLPASS CZ - NEW APP FULL OF CZECHIA!
                   </h4>
                 </a>
@@ -80,7 +80,7 @@ export default function News() {
                   The app is free to use for guidance and informatio...
                 </p>
                 <a href="*" className="link">
-                  <p data-v-28b4c0a4="" class="read-more">
+                  <p data-v-28b4c0a4="" className="read-more">
                     {t("READ_MORE") || "читать далее"}
                   </p>
                 </a>
@@ -89,7 +89,7 @@ export default function News() {
                 className="news-image"
                 style={{ backgroundImage: "url('img/news2.jpg')" }}
               >
-                <div data-v-28b4c0a4="" class="news-date">
+                <div data-v-28b4c0a4="" className="news-date">
                   18.04.2025
                 </div>
               </div>
