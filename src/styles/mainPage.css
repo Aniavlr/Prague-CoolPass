@@ -349,7 +349,7 @@ h3 {
   list-style: none;
   background: #f8f8f8;
   border: 1px solid #fdca2e;
-  border-top: none;
+  border-top: 1px solid #c5c5d03e;
   border-radius: 0 0 5px 5px;
   max-height: 280px;
   overflow-y: auto;
@@ -371,7 +371,7 @@ h3 {
   color: #252527;
   padding: 3px 15px 8px;
   position: relative;
-  border-bottom: 1px solid #c9c9cc3e;
+  border-bottom: 1px solid #c5c5d03e;
 }
 
 .autocomplete__results__item:hover,
@@ -434,8 +434,20 @@ h3 {
 
 .mobile-attractions-search {
   width: 100% !important;
-  border: 1px solid #e0e0e0 !important;
 }
+
+.mobile-attractions-search {
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+}
+
+.mobile-search-container
+  .autocomplete__box.autocomplete__searching
+  .mobile-attractions-search {
+  border: none !important;
+  border-radius: 5px;
+}
+
 
 .mobile-magnifying-glass {
   height: 48px !important;
