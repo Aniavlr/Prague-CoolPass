@@ -9,6 +9,7 @@ export default function Reviews() {
   const [reviewsData, setReviewsData] = useState([]);
   const [expandedReviews, setExpandedReviews] = useState({});
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [isAnimating, setIsAnimating] = useState(false); // ← более надёжный флаг
 
   const staticReviewIds = [
     "62c2bb7e067e8a53d7f8c308",
@@ -85,47 +86,71 @@ export default function Reviews() {
   const cardsPerView = isMobile ? 1 : CARDS_PER_VIEW_DESKTOP;
   const totalReviews = reviewsData.length;
 
+  // Точное обновление currentIndex после скролла
   useEffect(() => {
     const container = scrollContainerRef.current;
     if (!container) return;
 
+    let rafId;
     const handleScroll = () => {
-      const scrollLeft = container.scrollLeft;
-      // Реальная ширина одной карточки на текущем устройстве
-      const cardElements = container.querySelectorAll(".rev-card-wrapper");
-      const cardWidth =
-        cardElements.length > 0
-          ? cardElements[0].offsetWidth + GAP
-          : CARD_WIDTH + GAP;
+      if (isAnimating) return; // игнорируем во время анимации
 
-      const newIndex = Math.round(scrollLeft / cardWidth);
-      setCurrentIndex(Math.min(newIndex, totalReviews - 1));
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        const scrollLeft = container.scrollLeft;
+        const cardElements = container.querySelectorAll(".rev-card-wrapper");
+        const cardWidth =
+          cardElements.length > 0
+            ? cardElements[0].offsetWidth + GAP
+            : CARD_WIDTH + GAP;
+
+        const newIndex = Math.round(scrollLeft / cardWidth);
+        setCurrentIndex(Math.min(newIndex, totalReviews - 1));
+      });
     };
 
     container.addEventListener("scroll", handleScroll);
-    setTimeout(handleScroll, 100);
+    // Инициализация
+    handleScroll();
 
-    return () => container.removeEventListener("scroll", handleScroll);
-  }, [reviewsData.length]);
+    return () => {
+      container.removeEventListener("scroll", handleScroll);
+      cancelAnimationFrame(rafId);
+    };
+  }, [isMobile, totalReviews, isAnimating]);
+
+  // Переход к конкретной позиции (для стрелок)
+  const scrollToIndex = (index) => {
+    if (isAnimating || !scrollContainerRef.current) return;
+
+    setIsAnimating(true);
+
+    const cardElements =
+      scrollContainerRef.current.querySelectorAll(".rev-card-wrapper");
+    const cardWidth =
+      cardElements.length > 0
+        ? cardElements[0].offsetWidth + GAP
+        : CARD_WIDTH + GAP;
+    const targetPosition = index * cardWidth;
+
+    scrollContainerRef.current.scrollTo({
+      left: targetPosition,
+      behavior: "smooth",
+    });
+
+    // Снимаем блокировку после анимации (примерно 500–700 мс)
+    setTimeout(() => setIsAnimating(false), 700);
+  };
 
   const scrollPrev = () => {
-    if (scrollContainerRef.current && currentIndex > 0) {
-      const step = isMobile
-        ? MOBILE_CARD_WIDTH + GAP
-        : (CARD_WIDTH + GAP) * cardsPerView;
-      scrollContainerRef.current.scrollBy({ left: -step, behavior: "smooth" });
+    if (currentIndex > 0) {
+      scrollToIndex(currentIndex - cardsPerView);
     }
   };
 
   const scrollNext = () => {
-    if (
-      scrollContainerRef.current &&
-      currentIndex < totalReviews - cardsPerView
-    ) {
-      const step = isMobile
-        ? MOBILE_CARD_WIDTH + GAP
-        : (CARD_WIDTH + GAP) * cardsPerView;
-      scrollContainerRef.current.scrollBy({ left: step, behavior: "smooth" });
+    if (currentIndex < totalReviews - cardsPerView) {
+      scrollToIndex(currentIndex + cardsPerView);
     }
   };
 
@@ -158,7 +183,7 @@ export default function Reviews() {
         <div className="reviews-carousel-container">
           <div
             className={`reviews-left-control ${
-              currentIndex === 0 ? "disabled" : ""
+              currentIndex === 0 || isAnimating ? "disabled" : ""
             }`}
             onClick={scrollPrev}
           />
@@ -220,7 +245,7 @@ export default function Reviews() {
                             className="more-btn"
                             onClick={() => toggleReviewExpansion(review._id)}
                           >
-                            {isExpanded ? "less" : "more"}
+                            {isExpanded ? " less" : "more"}
                           </span>
                         )}
                       </div>
@@ -241,7 +266,9 @@ export default function Reviews() {
 
           <div
             className={`reviews-right-control ${
-              currentIndex >= totalReviews - cardsPerView ? "disabled" : ""
+              currentIndex >= totalReviews - cardsPerView || isAnimating
+                ? "disabled"
+                : ""
             }`}
             onClick={scrollNext}
           />
