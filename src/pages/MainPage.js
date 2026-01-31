@@ -25,6 +25,7 @@ export default function MainPage() {
   const [showNoResults, setShowNoResults] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [skipNextSearch, setSkipNextSearch] = useState(false);
+  const [showWhiteOverlay, setShowWhiteOverlay] = useState(true); //состояние для белого фона
 
   const searchRef = useRef(null);
   const resultsRef = useRef(null);
@@ -39,6 +40,17 @@ export default function MainPage() {
     }));
   }, [translations?.attractionsList]);
 
+  // Эффект для скрытия белого фона через время
+  useEffect(() => {
+    // Определяем время для разных устройств
+    const duration = isMobile ? 2000 : 3000;
+
+    const timer = setTimeout(() => {
+      setShowWhiteOverlay(false);
+    }, duration);
+
+    return () => clearTimeout(timer);
+  }, [isMobile]);
 
   useEffect(() => {
     const checkIfMobile = () => setIsMobile(window.innerWidth <= 768);
@@ -46,7 +58,6 @@ export default function MainPage() {
     window.addEventListener("resize", checkIfMobile);
     return () => window.removeEventListener("resize", checkIfMobile);
   }, []);
-
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -67,13 +78,11 @@ export default function MainPage() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-
   useEffect(() => {
     return () => {
       if (errorTimeoutRef.current) clearTimeout(errorTimeoutRef.current);
     };
   }, []);
-
 
   useEffect(() => {
     if (skipNextSearch) {
@@ -99,7 +108,7 @@ export default function MainPage() {
     }, 200);
 
     return () => clearTimeout(timer);
-  }, [searchQuery, attractionsLower]); 
+  }, [searchQuery, attractionsLower]);
 
   const handleSelectSuggestion = (item) => {
     setSearchQuery(item.title);
@@ -219,6 +228,25 @@ export default function MainPage() {
 
   return (
     <div className="main-page">
+      {/* Белый overlay поверх всего */}
+      {showWhiteOverlay && (
+        <div
+          className="white-overlay"
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            backgroundColor: "white",
+            zIndex: 9999,
+            pointerEvents: "none",
+            opacity: 1,
+            transition: "opacity 0.5s ease",
+          }}
+        />
+      )}
+
       <div className="nav-wrapper">
         <Navigation />
       </div>
