@@ -333,8 +333,7 @@ h3 {
 }
 
 .autocomplete__box {
-  border: none;
-  border-radius: 5px;
+  border: 1px solid transparent;
 }
 
 .autocomplete__box.autocomplete__searching {
@@ -372,6 +371,7 @@ h3 {
   color: #252527;
   padding: 3px 15px 8px;
   position: relative;
+  border-bottom: 1px solid #c9c9cc3e;
 }
 
 .autocomplete__results__item:hover,

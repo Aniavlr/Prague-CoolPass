@@ -10,7 +10,7 @@ import Reviews from "../components/Reviews";
 import Footer from "../components/Footer";
 
 import { useTranslation } from "../TranslationContext";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 
 import "../styles/mainPage.css";
@@ -21,31 +21,32 @@ export default function MainPage() {
 
   const [searchQuery, setSearchQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
-  // eslint-disable-next-line
-  const [hasResults, setHasResults] = useState(false);
   const [showEmptySearchError, setShowEmptySearchError] = useState(false);
   const [showNoResults, setShowNoResults] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [skipNextSearch, setSkipNextSearch] = useState(false);
 
   const searchRef = useRef(null);
   const resultsRef = useRef(null);
   const buttonRef = useRef(null);
   const errorTimeoutRef = useRef(null);
 
-  // eslint-disable-next-line
-  const attractions = translations?.attractionsList || [];
+  // Кэшируем список аттракций в нижнем регистре для быстрого поиска
+  const attractionsLower = useMemo(() => {
+    return (translations?.attractionsList || []).map((item) => ({
+      ...item,
+      titleLower: item.title.toLowerCase(),
+    }));
+  }, [translations?.attractionsList]);
 
-  // Проверка мобильного устройства
+
   useEffect(() => {
-    const checkIfMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-
+    const checkIfMobile = () => setIsMobile(window.innerWidth <= 768);
     checkIfMobile();
-    window.addEventListener('resize', checkIfMobile);
-
-    return () => window.removeEventListener('resize', checkIfMobile);
+    window.addEventListener("resize", checkIfMobile);
+    return () => window.removeEventListener("resize", checkIfMobile);
   }, []);
+
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -57,58 +58,64 @@ export default function MainPage() {
       ) {
         setSearchQuery("");
         setSuggestions([]);
-        setHasResults(false);
         setShowEmptySearchError(false);
         setShowNoResults(false);
       }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
 
   useEffect(() => {
     return () => {
-      if (errorTimeoutRef.current) {
-        clearTimeout(errorTimeoutRef.current);
-      }
+      if (errorTimeoutRef.current) clearTimeout(errorTimeoutRef.current);
     };
   }, []);
 
+
   useEffect(() => {
+    if (skipNextSearch) {
+      setSkipNextSearch(false);
+      return;
+    }
+
     if (!searchQuery.trim()) {
       setSuggestions([]);
-      setHasResults(false);
       setShowNoResults(false);
       return;
     }
 
-    const query = searchQuery.toLowerCase().trim();
+    const timer = setTimeout(() => {
+      const queryLower = searchQuery.toLowerCase().trim();
 
-    const filtered = attractions
-      .filter((item) => item.title.toLowerCase().includes(query))
-      .slice(0, 8);
+      const filtered = attractionsLower
+        .filter((item) => item.titleLower.includes(queryLower))
+        .slice(0, 8);
 
-    setSuggestions(filtered);
-    setHasResults(filtered.length > 0);
-    setShowNoResults(filtered.length === 0);
-  }, [searchQuery, attractions]);
+      setSuggestions(filtered);
+      setShowNoResults(filtered.length === 0);
+    }, 200);
+
+    return () => clearTimeout(timer);
+  }, [searchQuery, attractionsLower]); 
 
   const handleSelectSuggestion = (item) => {
     setSearchQuery(item.title);
     setSuggestions([]);
-    setHasResults(false);
     setShowNoResults(false);
     setShowEmptySearchError(false);
+    setSkipNextSearch(true);
   };
 
   const handleSearchInput = (e) => {
     const value = e.target.value;
     setSearchQuery(value);
     setShowEmptySearchError(false);
-    setShowNoResults(false);
+
+    if (value.trim()) setShowNoResults(false);
+    setSkipNextSearch(false);
   };
 
   const handleSearchSubmit = (e) => {
@@ -121,12 +128,8 @@ export default function MainPage() {
       setShowEmptySearchError(true);
       setShowNoResults(false);
       setSuggestions([]);
-      setHasResults(false);
 
-      if (errorTimeoutRef.current) {
-        clearTimeout(errorTimeoutRef.current);
-      }
-
+      if (errorTimeoutRef.current) clearTimeout(errorTimeoutRef.current);
       errorTimeoutRef.current = setTimeout(() => {
         setShowEmptySearchError(false);
       }, 4000);
@@ -134,28 +137,19 @@ export default function MainPage() {
       return;
     }
 
-    // Проверяем, есть ли результаты для текущего запроса
-    const query = searchQuery.toLowerCase().trim();
-    const hasResultsForQuery = attractions.some((item) =>
-      item.title.toLowerCase().includes(query)
+    const queryLower = searchQuery.toLowerCase().trim();
+    const hasResults = attractionsLower.some((item) =>
+      item.titleLower.includes(queryLower)
     );
 
-    if (!hasResultsForQuery) {
+    if (!hasResults) {
       setShowNoResults(true);
       setSuggestions([]);
-      setHasResults(false);
 
-      setTimeout(() => {
-        setSearchQuery("");
-      }, 300);
+      setTimeout(() => setSearchQuery(""), 300);
 
-      if (errorTimeoutRef.current) {
-        clearTimeout(errorTimeoutRef.current);
-      }
-
-      errorTimeoutRef.current = setTimeout(() => {
-        setShowNoResults(false);
-      }, 3000);
+      if (errorTimeoutRef.current) clearTimeout(errorTimeoutRef.current);
+      errorTimeoutRef.current = setTimeout(() => setShowNoResults(false), 3000);
 
       return;
     }
@@ -164,7 +158,6 @@ export default function MainPage() {
     navigate("*");
     setSearchQuery("");
     setSuggestions([]);
-    setHasResults(false);
     setShowEmptySearchError(false);
     setShowNoResults(false);
   };
@@ -178,7 +171,6 @@ export default function MainPage() {
 
   const handleInputFocus = () => {
     if (searchQuery.trim() && suggestions.length > 0) {
-      setHasResults(true);
     }
   };
 
@@ -250,7 +242,7 @@ export default function MainPage() {
               развлечений в Праге`}
             </h3>
           </div>
-          
+
           {/* Поисковая форма на десктопе здесь */}
           {!isMobile && (
             <div className="form-container">
@@ -320,7 +312,10 @@ export default function MainPage() {
       {/* Поисковая форма на мобильных после underbar */}
       {isMobile && (
         <div className="mobile-form-container">
-          <div className="search-container mobile-search-container" ref={searchRef}>
+          <div
+            className="search-container mobile-search-container"
+            ref={searchRef}
+          >
             <div
               className={`autocomplete__box ${
                 shouldShowDropdown ? "autocomplete__searching" : ""
@@ -347,10 +342,7 @@ export default function MainPage() {
               onClick={handleSearchSubmit}
               style={{ cursor: "pointer" }}
             >
-              <img
-                src="img/search.a842451d.svg"
-                alt="search"
-              />
+              <img src="img/search.a842451d.svg" alt="search" />
             </div>
           </div>
           <button

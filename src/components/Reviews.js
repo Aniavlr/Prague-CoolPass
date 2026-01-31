@@ -32,7 +32,11 @@ export default function Reviews() {
     if (!dateString) return "";
     const date = new Date(dateString);
     if (isNaN(date.getTime())) return dateString;
-    return new Intl.DateTimeFormat("en-US", { year: "numeric", month: "long", day: "numeric" }).format(date);
+    return new Intl.DateTimeFormat("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    }).format(date);
   };
 
   const toggleReviewExpansion = (reviewId) => {
@@ -40,15 +44,20 @@ export default function Reviews() {
   };
 
   const shouldTruncateText = (text) => (text?.length ?? 0) > 200;
-  const truncateText = (text) => (text?.length ?? 0) > 200 ? text.substring(0, 200) + "..." : text || "";
+  const truncateText = (text) =>
+    (text?.length ?? 0) > 200 ? text.substring(0, 200) + "..." : text || "";
 
   useEffect(() => {
     const loadReviews = async () => {
       try {
-        const response = await fetch("https://api2.praguecoolpass.com/review/approved");
+        const response = await fetch(
+          "https://api2.praguecoolpass.com/review/approved"
+        );
         const allReviews = await response.json();
 
-        const filteredReviews = allReviews.filter((review) => staticReviewIds.includes(review._id));
+        const filteredReviews = allReviews.filter((review) =>
+          staticReviewIds.includes(review._id)
+        );
         const sortedReviews = staticReviewIds
           .map((id) => filteredReviews.find((r) => r._id === id))
           .filter(Boolean);
@@ -70,7 +79,8 @@ export default function Reviews() {
   const CARD_WIDTH = 367;
   const GAP = 20;
   const CARDS_PER_VIEW_DESKTOP = 3;
-  const MOBILE_CARD_WIDTH = typeof window !== "undefined" ? window.innerWidth * 0.9 : 320;
+  const MOBILE_CARD_WIDTH =
+    typeof window !== "undefined" ? window.innerWidth * 0.9 : 320;
 
   const cardsPerView = isMobile ? 1 : CARDS_PER_VIEW_DESKTOP;
   const totalReviews = reviewsData.length;
@@ -83,7 +93,10 @@ export default function Reviews() {
       const scrollLeft = container.scrollLeft;
       // Реальная ширина одной карточки на текущем устройстве
       const cardElements = container.querySelectorAll(".rev-card-wrapper");
-      const cardWidth = cardElements.length > 0 ? cardElements[0].offsetWidth + GAP : CARD_WIDTH + GAP;
+      const cardWidth =
+        cardElements.length > 0
+          ? cardElements[0].offsetWidth + GAP
+          : CARD_WIDTH + GAP;
 
       const newIndex = Math.round(scrollLeft / cardWidth);
       setCurrentIndex(Math.min(newIndex, totalReviews - 1));
@@ -95,17 +108,23 @@ export default function Reviews() {
     return () => container.removeEventListener("scroll", handleScroll);
   }, [reviewsData.length]);
 
-
   const scrollPrev = () => {
     if (scrollContainerRef.current && currentIndex > 0) {
-      const step = isMobile ? MOBILE_CARD_WIDTH + GAP : (CARD_WIDTH + GAP) * cardsPerView;
+      const step = isMobile
+        ? MOBILE_CARD_WIDTH + GAP
+        : (CARD_WIDTH + GAP) * cardsPerView;
       scrollContainerRef.current.scrollBy({ left: -step, behavior: "smooth" });
     }
   };
 
   const scrollNext = () => {
-    if (scrollContainerRef.current && currentIndex < totalReviews - cardsPerView) {
-      const step = isMobile ? MOBILE_CARD_WIDTH + GAP : (CARD_WIDTH + GAP) * cardsPerView;
+    if (
+      scrollContainerRef.current &&
+      currentIndex < totalReviews - cardsPerView
+    ) {
+      const step = isMobile
+        ? MOBILE_CARD_WIDTH + GAP
+        : (CARD_WIDTH + GAP) * cardsPerView;
       scrollContainerRef.current.scrollBy({ left: step, behavior: "smooth" });
     }
   };
@@ -138,7 +157,9 @@ export default function Reviews() {
       <div className="reviews-carousel">
         <div className="reviews-carousel-container">
           <div
-            className={`reviews-left-control ${currentIndex === 0 ? "disabled" : ""}`}
+            className={`reviews-left-control ${
+              currentIndex === 0 ? "disabled" : ""
+            }`}
             onClick={scrollPrev}
           />
 
@@ -155,24 +176,50 @@ export default function Reviews() {
 
                 return (
                   <div key={review._id} className="rev-card-wrapper">
-                    <div className={`rev-card-container ${isExpanded ? "expanded" : ""}`}>
+                    <div
+                      className={`rev-card-container ${
+                        isExpanded ? "expanded" : ""
+                      }`}
+                    >
                       <div className="review-header">
                         <div className="stars-rating rating">
                           {[...Array(5)].map((_, i) => (
-                            <span key={i} className={i < review.rating ? "active-star" : "star"}></span>
+                            <span
+                              key={i}
+                              className={
+                                i < review.rating ? "active-star" : "star"
+                              }
+                            ></span>
                           ))}
                         </div>
-                        <div className="review-summary">{review.title || "Без названия"}</div>
-                        <div className="date">{formatDate(review.date) || "Дата не указана"}</div>
+                        <div className="review-summary">
+                          {review.title || "Без названия"}
+                        </div>
+                        <div className="date">
+                          {formatDate(review.date) || "Дата не указана"}
+                        </div>
                       </div>
 
-                      <div className={`review-body ${isExpanded ? "expanded" : ""}`}>
-                        <span className={`review-text ${!isExpanded && shouldShowMoreButton ? "truncated" : ""}`}>
+                      <div
+                        className={`review-body ${
+                          isExpanded ? "expanded" : ""
+                        }`}
+                      >
+                        <span
+                          className={`review-text ${
+                            !isExpanded && shouldShowMoreButton
+                              ? "truncated"
+                              : ""
+                          }`}
+                        >
                           {displayText || "Текст отзыва отсутствует"}
                         </span>
 
                         {shouldShowMoreButton && (
-                          <span className="more-btn" onClick={() => toggleReviewExpansion(review._id)}>
+                          <span
+                            className="more-btn"
+                            onClick={() => toggleReviewExpansion(review._id)}
+                          >
                             {isExpanded ? "less" : "more"}
                           </span>
                         )}
@@ -193,7 +240,9 @@ export default function Reviews() {
           </div>
 
           <div
-            className={`reviews-right-control ${currentIndex >= totalReviews - cardsPerView ? "disabled" : ""}`}
+            className={`reviews-right-control ${
+              currentIndex >= totalReviews - cardsPerView ? "disabled" : ""
+            }`}
             onClick={scrollNext}
           />
         </div>
@@ -211,7 +260,9 @@ export default function Reviews() {
           <a href="*">{t("REVIEWS_see_all") || "ПОСМОТРЕТЬ ВСЕ ОТЗЫВЫ"}</a>
         </div>
         <div id="write-your-opinion-btn" className="review-button">
-          <span>{t("REVIEWS_write_your_opinion") || "НАПИШИТЕ СВОЙ ОТЗЫВ"}</span>
+          <span>
+            {t("REVIEWS_write_your_opinion") || "НАПИШИТЕ СВОЙ ОТЗЫВ"}
+          </span>
         </div>
       </div>
     </>
