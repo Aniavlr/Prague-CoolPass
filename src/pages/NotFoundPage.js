@@ -22,7 +22,7 @@ export default function NotFoundPage() {
       "ontouchstart" in window ||
       navigator.maxTouchPoints > 0;
 
-    const duration = isMobile ? 4500 : 4000;
+    const duration = isMobile ? 6000 : 5500;
 
     showWhiteScreen(duration);
 

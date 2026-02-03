@@ -1,4 +1,3 @@
-// TranslationContext.js
 import { createContext, useContext, useState } from "react";
 
 const TranslationContext = createContext({});

@@ -6,7 +6,7 @@ import App from "./App";
 const rootElement = document.getElementById("root");
 
 
-export const showWhiteScreen = (duration = 3000) => {
+export const showWhiteScreen = (duration = 6000) => {
   console.log(`showWhiteScreen called with duration: ${duration}ms`);
 
   rootElement.style.opacity = "0";
@@ -37,7 +37,7 @@ const checkMobile = () => {
 
 const isMobile = checkMobile();
 
-showWhiteScreen(4000);
+showWhiteScreen(6000);
 
 const root = ReactDOM.createRoot(rootElement);
 
