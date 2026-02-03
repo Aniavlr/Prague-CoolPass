@@ -16,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 import "../styles/mainPage.css";
 
 export default function MainPage() {
-  const { t, translations } = useTranslation();
+  const { t, translations, isLoading: isTranslationsLoading } = useTranslation();
   const navigate = useNavigate();
 
   const [searchQuery, setSearchQuery] = useState("");
@@ -25,7 +25,6 @@ export default function MainPage() {
   const [showNoResults, setShowNoResults] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [skipNextSearch, setSkipNextSearch] = useState(false);
-  const [showWhiteOverlay, setShowWhiteOverlay] = useState(true); //состояние для белого фона
 
   const searchRef = useRef(null);
   const resultsRef = useRef(null);
@@ -39,18 +38,6 @@ export default function MainPage() {
       titleLower: item.title.toLowerCase(),
     }));
   }, [translations?.attractionsList]);
-
-  // Эффект для скрытия белого фона через время
-  useEffect(() => {
-    // Определяем время для разных устройств
-    const duration = isMobile ? 2000 : 3000;
-
-    const timer = setTimeout(() => {
-      setShowWhiteOverlay(false);
-    }, duration);
-
-    return () => clearTimeout(timer);
-  }, [isMobile]);
 
   useEffect(() => {
     const checkIfMobile = () => setIsMobile(window.innerWidth <= 768);
@@ -226,27 +213,12 @@ export default function MainPage() {
   const shouldShowDropdown =
     showEmptySearchError || showNoResults || suggestions.length > 0;
 
+  if (isTranslationsLoading) {
+    return null; // Provider покажет белый экран
+  }
+
   return (
     <div className="main-page">
-      {/* Белый overlay поверх всего */}
-      {showWhiteOverlay && (
-        <div
-          className="white-overlay"
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            backgroundColor: "white",
-            zIndex: 9999,
-            pointerEvents: "none",
-            opacity: 1,
-            transition: "opacity 0.5s ease",
-          }}
-        />
-      )}
-
       <div className="nav-wrapper">
         <Navigation />
       </div>
@@ -266,8 +238,7 @@ export default function MainPage() {
             </h1>
             <h3 className="header-subtitle">
               {t("subtitle") ||
-                `Пасс "Все включено" - самый широкий выбор достопримечательностей и
-              развлечений в Праге`}
+                "Пасс 'Все включено' - самый широкий выбор достопримечательностей и развлечений в Праге"}
             </h3>
           </div>
 
@@ -276,9 +247,7 @@ export default function MainPage() {
             <div className="form-container">
               <div className="search-container" ref={searchRef}>
                 <div
-                  className={`autocomplete__box ${
-                    shouldShowDropdown ? "autocomplete__searching" : ""
-                  }`}
+                  className={`autocomplete__box ${shouldShowDropdown ? "autocomplete__searching" : ""}`}
                 >
                   <div className="autocomplete__inputs">
                     <input
@@ -331,9 +300,7 @@ export default function MainPage() {
       <div className="underbar">
         <p className="underbar-text">
           {t("header_banner") ||
-            `C 1992 года - Вход в 80+ аттракций - Единственный Пасс с Национальным
-          музеем и Национальной галереей - CoolPass или Prague Card - Лучшая
-          цена`}
+            "C 1992 года - Вход в 80+ аттракций - Единственный Пасс с Национальным музеем и Национальной галереей - CoolPass или Prague Card - Лучшая цена"}
         </p>
       </div>
 
@@ -345,9 +312,7 @@ export default function MainPage() {
             ref={searchRef}
           >
             <div
-              className={`autocomplete__box ${
-                shouldShowDropdown ? "autocomplete__searching" : ""
-              }`}
+              className={`autocomplete__box ${shouldShowDropdown ? "autocomplete__searching" : ""}`}
             >
               <div className="autocomplete__inputs">
                 <input
